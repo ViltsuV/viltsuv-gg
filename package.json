@@ -1,5 +1,6 @@
 {
-	"name": "skeleton-app",
+	"name": "viltsuv-gg",
+	"description": "my portfolio / project hub",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
