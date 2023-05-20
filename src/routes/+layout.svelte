@@ -17,15 +17,15 @@
 			<svelte:fragment slot="trail">
 				<a
 					class="btn btn-sm variant-ghost-surface"
-					href="https://discord.gg/EXqV7W8MtY"
+					href="https://www.linkedin.com/"
 					target="_blank"
 					rel="noreferrer"
 				>
-					Discord
+					LinkedIn
 				</a>
 				<a
 					class="btn btn-sm variant-ghost-surface"
-					href="https://twitter.com/SkeletonUI"
+					href="https://twitter.com/ViltsuV"
 					target="_blank"
 					rel="noreferrer"
 				>
@@ -33,12 +33,13 @@
 				</a>
 				<a
 					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
+					href="https://github.com/ViltsuV"
 					target="_blank"
 					rel="noreferrer"
 				>
 					GitHub
 				</a>
+				<button class="btn btn-sm variant-ringed-primary">Login</button>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
