@@ -12,7 +12,9 @@
 	<svelte:fragment slot="header">
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl">ViltsuV.gg</strong>
+				<a href=".">
+					<strong class="text-xl">ViltsuV.gg</strong>
+				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
