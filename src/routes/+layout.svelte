@@ -6,7 +6,7 @@
 	import '@skeletonlabs/skeleton/styles/all.css'
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss'
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton'
+	import { AppShell, AppBar, SlideToggle } from '@skeletonlabs/skeleton'
 </script>
 
 <AppShell>
@@ -42,6 +42,7 @@
 				>
 					GitHub
 				</a>
+				<SlideToggle name="theme" size="sm" label="color-theme" />
 				<button class="btn btn-sm variant-ringed-primary">Login</button>
 			</svelte:fragment>
 		</AppBar>
