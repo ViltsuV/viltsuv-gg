@@ -7,6 +7,22 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss'
 	import { AppShell, AppBar, SlideToggle } from '@skeletonlabs/skeleton'
+	import { onMount } from 'svelte'
+
+	onMount(()=> {
+		// todo: get/set initial localStorage value
+	})
+
+	const toggle_light_switch = () => {
+		const root_classes = document.documentElement.classList
+			// todo: change store value too
+		if (root_classes.contains('dark')) {
+			root_classes.remove('dark')
+		} else {
+			root_classes.add('dark')
+		}
+	}
+
 </script>
 
 <AppShell>
@@ -53,7 +69,7 @@
 						</g>
 					</svg>
 				</a>
-				<SlideToggle name="theme" size="sm" label="color-theme" />
+				<SlideToggle name="light-switch" size="sm" on:change={toggle_light_switch} />
 				<button class="btn btn-sm variant-ringed-primary">Login</button>
 			</svelte:fragment>
 		</AppBar>
