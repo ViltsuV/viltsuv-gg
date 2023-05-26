@@ -6,22 +6,12 @@
 	import '@skeletonlabs/skeleton/styles/all.css'
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss'
-	import { AppShell, AppBar, SlideToggle } from '@skeletonlabs/skeleton'
+	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton'
 	import { onMount } from 'svelte'
 
 	onMount(()=> {
 		// todo: get/set initial localStorage value
 	})
-
-	const toggle_light_switch = () => {
-		const root_classes = document.documentElement.classList
-			// todo: change store value too
-		if (root_classes.contains('dark')) {
-			root_classes.remove('dark')
-		} else {
-			root_classes.add('dark')
-		}
-	}
 
 </script>
 
@@ -35,14 +25,14 @@
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
-					class="btn btn-sm variant-ghost-surface"
+					class="unselectable btn btn-sm variant-ghost-surface"
 					href="/projects"
 					target="_self"
 				>
 					Projects
 				</a>
 				<a
-					class="btn btn-sm variant-ghost-surface"
+					class="unselectable btn btn-sm variant-ghost-surface"
 					href="/work-history"
 					target="_self"
 				>
@@ -64,8 +54,8 @@
 						</g>
 					</svg>
 				</a>
-				<SlideToggle name="light-switch" size="sm" on:change={toggle_light_switch} />
-				<button class="btn btn-sm variant-ringed-primary">Login</button>
+				<LightSwitch name="light-switch" size="sm" />
+				<button class="unselectable btn btn-sm variant-ringed-primary">Login</button>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
@@ -75,5 +65,8 @@
 <style lang="postcss">
 	.svg-logo {
 		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5))
+	}
+	.unselectable {
+		user-select: none
 	}
 </style>

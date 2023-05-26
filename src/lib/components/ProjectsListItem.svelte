@@ -6,7 +6,7 @@
 
 <div class="projects-list-item flex flex-row">
 
-  <img class="project-screenshot" src={project.screenshot_url} alt={project.screenshot_alt}>
+  <img class="project-screenshot unselectable" src={project.screenshot_url} alt={project.screenshot_alt}>
 
   <div class="project-info">
     <a href='projects/{project.slug}' class="project-name">
@@ -48,6 +48,9 @@
     @apply
       pl-4
   }
+	.unselectable {
+		user-select: none
+	}
   .technology-type-frontend {
 
   }
