@@ -13,14 +13,8 @@
       {project.name ? project.name : '[Project name]'}
     </a>
     <div class="project-description">{project.description ? project.description : '[project description]'}</div>
-    <div class="status">
-      last activity: [todo: calculate last activity]
-    </div>
     <div class="activity">
-      activity: 
-      <span class="start-time">start time - </span>
-      <span class="end-time">end time</span>
-
+      last activity: [todo: calculate last activity]
     </div>
     <div class="technologies">
       tech stack / tools:
