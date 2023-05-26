@@ -1,0 +1,350 @@
+﻿<script>
+	$(document).foundation();
+	// NAVIGATION
+	$(".off-canvas-submenu").show();
+	$(".off-canvas-submenu-call").click(function () {
+		var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '+' : '-';
+		$(this).parent().next(".off-canvas-submenu").slideToggle('fast');
+		$(this).find("span").text(icon);
+	});
+
+	$(document).ready(function () {
+
+		// Define Global variables
+
+		var sliderValue = 23;
+		var inputFile = $('#inputFile');
+		var inputPath = $('#inputPath');
+
+		var outputFile = $('#outputFile');
+		var outputPath = $('#outputPath');
+
+		var selectedVcodec = $('.vcodec');
+		var selectedAcodec = $('.acodec');
+		var selectedPreset = $('.preset');
+
+		var avOptions = $('#avOptions');
+
+		// USER SELECTED OPTIONS
+		var input_file = inputPath.val();
+		var output_file = outputPath.val();
+
+		var global_options = {
+			hide_banner: '-hide_banner', // hides information about the configuration of FFMPEG in the output
+		};
+
+		var input_file_options = {
+			start_number: '-start_number ' + 124,
+			end_number: '-end_number ' + 837
+		};
+
+		var output_file_options = {
+			vcodec: '-c:v ' + selectedVcodec.val() + ' ',
+			acodec: '-c:a ' + selectedAcodec.val() + ' ',
+			preset: '',
+			x264_options: {
+				crf: sliderValue + ' '
+			}
+		};
+
+
+
+		// COMMAND LINE and OPTIONS TABLE jQUERY SELECTORS FOR COLOR CODING
+		var cmd_global_options = $('.cmd_global_options');
+
+		var cmd_input_file_options = $('.cmd_input_file_options');
+		var cmd_input_file = $('.cmd_input_file');
+
+		var cmd_output_file_options = $('.cmd_output_file_options');
+		var cmd_output_file = $('.cmd_output_file');
+
+		window.onload = function () { // EXAMPLE VALUES
+
+
+			// initial GLOBAL OPTIONS
+			cmd_global_options.append(global_options.hide_banner + ' ');
+
+			// initial INPUT
+
+			cmd_input_file.append('-i ' + input_file + ' ');
+
+			// initial INPUT OPTIONS
+			cmd_input_file_options.append(input_file_options.start_number + ' ');
+
+			// initial OUTPUT
+			cmd_output_file.append(output_file);
+
+			// initial OUTPUT OPTIONS
+			cmd_output_file_options.append(output_file_options.vcodec);
+			cmd_output_file_options.append(output_file_options.acodec);
+		};
+
+
+		// ---------------------- OPTION LISTENERS ---------------------------
+
+		$('[data-slider]').on('change.fndtn.slider', function () {
+			sliderValue = $('#slider').attr('data-slider');
+			output_file_options.x264_options.crf = ' -' + selectedVcodec.name + ' -crf ' + sliderValue;
+			console.log(".vcodec.option.id", $('.vcodec').attr('id'));
+		});
+
+		$('#days-off-count').keyup(function () {
+			sliderValue = $(this).val(); /*get the current value of the input field*/
+			console.log("slidervalue", sliderValue);
+			if (sliderValue > 51) {
+				$('#slider').foundation('slider', 'set_value', 51);
+			} else if (sliderValue < 0) {
+				$('#slider').foundation('slider', 'set_value', 0);
+			} else if (sliderValue === '') {
+				$('#slider').foundation('slider', 'set_value', 0);
+			} else {
+				$('#slider').foundation('slider', 'set_value', sliderValue);
+			}
+
+		});
+
+		// User selects an input file
+		inputFile.change(function () {
+			cmd_input_file.empty();
+			cmd_input_file.append('-i ' + inputPath.val() + ' ');
+		});
+
+		// User types an input path
+		inputPath.change(function () {
+			cmd_input_file.empty();
+			cmd_input_file.append('-i ' + inputPath.val() + ' ');
+		});
+
+		// User selects an output file
+		outputFile.change(function () {
+			cmd_output_file.empty();
+			cmd_output_file.append('-i ' + outputPath.val() + ' ');
+		});
+
+		// User types an output path
+		outputPath.change(function () {
+			cmd_output_file.empty();
+			cmd_output_file.append(outputPath.val() + ' ');
+		});
+
+		// User changes any video or audio option
+		avOptions.change(function () {
+			cmd_output_file_options.empty();
+			cmd_output_file_options.append(output_file_options.vcodec + output_file_options.x264_options.crf + output_file_options.acodec + ' ');
+		});
+
+		selectedVcodec.change(function () {
+			output_file_options.vcodec = '-c:v ' + this.value + ' ';
+		});
+
+		selectedPreset.change(function () {
+			output_file_options.preset = '-preset ' + this.value + ' ';
+		});
+
+		selectedAcodec.change(function () {
+			output_file_options.acodec = '-c:a ' + this.value + ' ';
+		});
+	});
+</script>
+
+<div class="off-canvas-wrap" data-offcanvas>
+	<div class="inner-wrap">
+		<nav class="tab-bar">
+			<section class="left-small">
+				<a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+			</section>
+		</nav>
+
+		<aside class="left-off-canvas-menu"> <!-- NAVIGATION -->
+			<ul class="off-canvas-list">
+
+				<li><label><a href="index.html">Projects</a></label></li>
+
+				<li><a href="FFMPEG-Web-UI.html">FFMPEG Web UI</a></li>
+
+				<li><a href="#" class="off-canvas-submenu-call">Verkkopalvelut <span class="right"> + </span></a></li>
+				<ul class="off-canvas-submenu">
+					<li><a href="instagram-Google-Maps.html">Instagram + Google Maps</a></li>
+				</ul>
+
+				<li><a href="#" class="off-canvas-submenu-call">Foundation examples <span class="right"> + </span></a></li>
+				<ul class="off-canvas-submenu">
+					<li><a href="foundation_examples/mobile-first-responsive-form.html">Mobile-First Responsive Form</a></li>
+					<li><a href="#">Sub menu 2</a></li>
+					<li><a href="#">Sub menu 3</a></li>
+				</ul>
+			</ul>
+		</aside>
+
+		<div class="row">
+			<h4 id="ffh4">FFMPEG Web UI</h4>
+			<div class=" medium-6 columns">
+				<fieldset>
+					<legend>Input</legend>
+					<label>Source file location
+						<input id="inputPath" type="text" placeholder="Select source file to convert"
+							value="C:\Videos\lossless\example_lossless.avi" data-tooltip aria-haspopup="true" class="has-tip"
+							title="Due to security reasons, it is not possible to retrieve the 
+							real path to the file from your computer with JavaScript, 
+							so just copy and paste it on top of '<strong>C:\fakepath</strong>'\ "
+						>
+						<input id="inputFile" name="inputfile" type="file" placeholder="Select source file to convert">
+					</label>
+				</fieldset>
+			</div>
+			<div class=" medium-6 columns">
+				<fieldset>
+					<legend>Output</legend>
+					<label>Output file location
+						<input id="outputPath" type="text" placeholder="Select output location and file name"
+							value="C:\Videos\example_converted.mp4" data-tooltip aria-haspopup="true" class="has-tip"
+							title="Due to security reasons, it is not possible to retrieve the 
+							real path to the file from your computer with JavaScript, 
+							so just copy and paste it on top of '<strong>C:\fakepath</strong>'\ 
+							<br /><br /> Note: If you run the command with an existing file as 
+							the output file, <strong style='color:red;'>it will be overwritten</strong> ">
+						<input id="outputFile" data-tooltip aria-haspopup="true" class="has-tip"
+							title="Note: If you run the command with an existing file as the output 
+							file, <strong style='color:red;'>it will be overwritten</strong>"
+							name="myfile" type="file">
+					</label>
+				</fieldset>
+			</div>
+			<div id="avOptions">
+				<div class="small-12 medium-6 large-6 columns">
+					<fieldset>
+						<legend>Video Codec</legend>
+						<label>Select codec
+							<select class="vcodec">
+								<option value="copy">Copy (Use source codec)</option>
+								<option value="libx264" name="x264">H.264 AVC (x264)</option>
+								<option value="libx265" name="x265">H.265 HEVC (x265)</option>
+							</select>
+						</label>
+						<div id="crf" class="wrap-slider">
+							<div class="small-12 columns">
+								<fieldset>
+									<legend>Video Codec Options</legend>
+									<label>CRF
+										<div class="small-12 large-6 columns">
+											<input type="number" id="days-off-count" value="23" />
+										</div>
+									</label>
+									<div class=" small-12 large-12 end columns">
+										<div id="slider" class="range-slider radius" data-slider
+											data-options="start: 51; end: 0; display_selector: #days-off-count; initial: 23;">
+											<span class="range-slider-handle" role="slider" tabindex="0"></span>
+											<span class="range-slider-active-segment"></span>
+										</div>
+									</div>
+									<label>Preset
+										<select class="preset" selected="veryfast">
+											<option value="ultrafast">ultrafast</option>
+											<option value="superfast">superfast</option>
+											<option value="veryfast">veryfast</option>
+											<option value="faster">faster</option>
+											<option value="fast">fast</option>
+											<option value="medium">medium</option>
+											<option value="slow">slow</option>
+											<option value="slower">slower</option>
+										</select>
+								</fieldset>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="small-12 medium-6 large-6 columns">
+					<fieldset>
+						<legend>Audio Codec</legend>
+						<label>Select codec
+							<select class="acodec">
+								<option value="copy">Copy (Use source codec)</option>
+								<option value="libvo_aacenc">AAC</option>
+								<option value="libmp3lame">MP3</option>
+							</select>
+						</label>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 columns">
+				<fieldset id="command">
+					<legend>Code</legend>
+					Here's how it works:
+					<pre class="howitworks" style="color:#aaa;"><span>ffmpeg </span><span class="global_options" style="color:#fdabc7">[global_options] </span></span><span class="input_file" style="color:#2b9eff">{</span><span class="input_file_options" style="color:#aed5fc">[input_file_options] </span><span class="input_file" style="color:#2b9eff">-i input_file} </span><span class="output_file" style="color:#41f218">{</span><span class="output_file_options" style="color:#9ff28c">[output_file_options] </span><span class="output_file" style="color:#41f218">output_file}</span>
+						</pre>
+					For example:
+					<pre class="example_code" style="color:#777;">ffmpeg -i input.avi -b:v 64k -bufsize 64k output.avi</pre>
+					Your options:<br /><br />
+					<table id="optionsTable">
+						<tr>
+							<td>global_options</td>
+							<td class="cmd_global_options" style="color:#fdabc7"></td>
+						</tr>
+						<tr>
+							<td>input_file_options</td>
+							<td class="cmd_input_file_options" style="color:#aed5fc"></td>
+						</tr>
+						<tr>
+							<td>input_file</td>
+							<td class="cmd_input_file" style="color:#2b9eff"></td>
+						</tr>
+						<tr>
+							<td>output_file_options</td>
+							<td class="cmd_output_file_options" style="color:#9ff28c"></td>
+						</tr>
+						<tr>
+							<td>output_file</td>
+							<td class="cmd_output_file" style="color:#41f218"></td>
+						</tr>
+					</table>
+					Your code:<br /><br />
+					<pre class="finalCommand"><span>ffmpeg </span><span class="cmd_global_options" style="color:#fdabc7"></span><span class="cmd_input_file_options" style="color:#aed5fc"></span><span class="cmd_input_file" style="color:#2b9eff"></span><span class="cmd_output_file_options" style="color:#9ff28c"></span><span class="cmd_output_file" style="color:#41f218"></span>
+						</pre>
+				</fieldset>
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<fieldset>
+					<legend>TODO</legend>
+					<div class="row">
+						<dl style="padding-left:30px;" name="Description List, Description Term, Description Data">
+							<dt>Output code</dt>
+
+							<dd>- Code is generated and gets updated when you change options</dd>
+							<dd>- ability to switch between codec:video, c:v, etc. in the final code. same with audio codec (HTML
+								radio)</dd>
+							<dd>- information about SI unit usage and some sort of functionality regarding it</dd>
+
+							<br />
+							<br />
+							<br />
+
+							<dt>Codec options</dt>
+
+							<dd>- Correct codec options open when a codec is selected (JS)</dd>
+							<dd>- Slider handle or bar color changes (red, orange, yellow, green) based on current value</dd>
+
+							<dt>PHP</dt>
+
+							<dd>- Code picked up by php and placed into database
+							<dd>
+
+							<dt>Authentication</dt>
+
+							<dd>- Sign up</dd>
+							<dd>- Login</dd>
+							<dd>- Logout</dd>
+
+						</dl>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		<a class="exit-off-canvas"></a>
+	</div>
+</div>

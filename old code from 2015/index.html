@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html class="no-js" lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Projects</title>
+		<link href="assets/css/foundation.min.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="assets/css/app.min.css" rel="stylesheet" type="text/css" media="all" />
+		<script src="bower_components/modernizr/modernizr.js"></script>
+	</head>
+
+	<body>
+		<div class="off-canvas-wrap move-right" data-offcanvas>
+			<div class="inner-wrap">
+				<nav class="tab-bar">
+					<section class="left-small">
+						<a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+					</section>
+				</nav>
+				<aside class="left-off-canvas-menu"> <!-- NAVIGATION -->
+					<ul class="off-canvas-list">
+
+						<li><label><a href="index.html">Projects</a></label></li>
+
+						<li><a href="FFMPEG-Web-UI.html">FFMPEG Web UI</a></li>
+
+						<li><a href="#" class="off-canvas-submenu-call">Verkkopalvelut <span class="right"> + </span></a></li>
+						<ul class="off-canvas-submenu">
+							<li><a href="instagram-Google-Maps.html">Instagram + Google Maps</a></li>
+						</ul>
+
+						<li><a href="#" class="off-canvas-submenu-call">Foundation examples <span class="right"> + </span></a></li>
+						<ul class="off-canvas-submenu">
+							<li><a href="foundation_examples/Mobile-First-Responsive-Form.html">Mobile-First Responsive Form</a></li>
+							<li><a href="#">Sub menu 2</a></li>
+							<li><a href="#">Sub menu 3</a></li>
+						</ul>
+					</ul>
+				</aside>
+
+				<section id="projects" class="main-section">
+					<h1>Projects</h1>
+				</section>
+
+				<a class="exit-off-canvas"></a>
+			</div>
+		</div>
+
+		<!-- jQuery, Foundation required scripts, Navigation bar functionality -->
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="assets/js/foundation.min.js"></script>
+		<script>
+			$(document).foundation();
+			// NAVIGATION
+			$(".off-canvas-submenu").show();
+			$(".off-canvas-submenu-call").click(function () {
+				var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '+' : '-';
+				$(this).parent().next(".off-canvas-submenu").slideToggle('fast');
+				$(this).find("span").text(icon);
+			});
+		</script>
+		<!-- Site specific scripts -->
+	</body>
+
+</html>

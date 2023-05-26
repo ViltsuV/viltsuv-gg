@@ -1,0 +1,525 @@
+﻿<!doctype html>
+<html class="no-js" lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Projects</title>
+		<link href="assets/css/foundation.min.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="assets/css/app.min.css" rel="stylesheet" type="text/css" media="all" />
+		<script src="bower_components/modernizr/modernizr.js"></script>
+	</head>
+
+	<body>
+		<div class="off-canvas-wrap move-right" data-offcanvas>
+			<div class="inner-wrap">
+				<nav class="tab-bar">
+					<section class="left-small">
+						<a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+					</section>
+				</nav>
+
+				<aside class="left-off-canvas-menu"> <!-- NAVIGATION -->
+					<ul class="off-canvas-list">
+
+						<li><label><a href="index.html">Projects</a></label></li>
+
+						<li><a href="FFMPEG-Web-UI.html">FFMPEG Web UI</a></li>
+
+						<li><a href="#" class="off-canvas-submenu-call">Verkkopalvelut <span class="right"> + </span></a></li>
+						<ul class="off-canvas-submenu">
+							<li><a href="instagram-Google-Maps.html">Instagram + Google Maps</a></li>
+						</ul>
+
+						<li><a href="#" class="off-canvas-submenu-call">Foundation examples <span class="right"> + </span></a></li>
+						<ul class="off-canvas-submenu">
+							<li><a href="foundation_examples/Mobile-First-Responsive-Form.html">Mobile-First Responsive Form</a></li>
+							<li><a href="#">Sub menu 2</a></li>
+							<li><a href="#">Sub menu 3</a></li>
+						</ul>
+					</ul>
+				</aside>
+
+				<!-- instagramGoogleMaps -->
+				<div class="row">
+					<div class="large-10">
+						<input id="searchUser" type="text" value="yleftw">
+						<button id="searchUserButton">Search for User</button>
+						<form id="form">
+							<input id="searchText" type="text" value="Helsinki"></input>
+							<input id="searchButton" type="submit" value="Go to location">
+							<!--
+				<input id="getWikipedia" type="submit" value="Get Wikipedia articles">
+				-->
+						</form><br />
+						<div id="map"></div>
+						<div id="wikipediaResults"></div><br />
+						<!-- Foundation
+				<div class="row" >
+					<div class="large-12 columns">
+						<div class="panel">
+						</div>
+					</div>
+				</div>
+			-->
+						<!--<script src="assets/js/lab4_instagram.js"></script>-->
+					</div>
+				</div>
+
+				<a class="exit-off-canvas"></a>
+			</div>
+		</div>
+
+		<!-- jQuery, Foundation required scripts, Navigation bar functionality -->
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="assets/js/foundation.min.js"></script>
+		<script>
+			$(document).foundation();
+			// NAVIGATION
+			$(".off-canvas-submenu").show();
+			$(".off-canvas-submenu-call").click(function () {
+				var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '+' : '-';
+				$(this).parent().next(".off-canvas-submenu").slideToggle('fast');
+				$(this).find("span").text(icon);
+			});
+		</script>
+		<!-- Site specific scripts -->
+		<script>
+			$(document).ready(function () {
+
+				var imageContainer;
+
+				var currentImage; // tällä hetkellä valittuna oleva kuva-elementti
+				//html has:
+				//	<div id="map">
+				//	<div id="wikipediaResults">
+				$('body').prepend('<div id="instagram_buttons">');
+				$('body').prepend('<div id="userInfo">');
+				$('#userInfo').append('<br/>');
+				$('body').prepend('<div id="imageContainer">');
+				$('#map').append('<div id="profileImg" style="position:absolute;">');
+
+				$('#userInfo').text('#UserInfo');
+
+				$('#instagram_buttons').append('<button id="previous">');
+				$('#previous').text('Previous');
+
+				$('#instagram_buttons').append('<button id="next">');
+				$('#next').text('Next');
+
+				$('#instagram_buttons').append('<button id="clear">');
+				$('#clear').text('Clear');
+
+				$('#instagram_buttons').append('<button id="instagram_button">');
+				$('#instagram_button').text('Hae Instagramista');
+
+				imageContainer = $('#imageContainer');
+
+				//INSTAGRAM
+
+				//Next napin painallus
+				$('#next').click(function () {
+					nextImage(currentImage);
+				});
+
+				//Previous napin painallus
+				$('#previous').click(function () {
+					prevImage(currentImage);
+				});
+
+				//Clear napin painallus
+				$('#clear').click(function () {
+					clearImages();
+					clearMarkers();
+				});
+
+				var insertedUserName;
+
+				//Search for User -napin painallus
+				$('#searchUserButton').click(function () {
+					insertedUserName = $('#searchUser').val();
+					console.log("insertedUserName:", insertedUserName);
+					searchByUserName(insertedUserName);
+				});
+
+				// authorization https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code
+
+				function searchForInstagramUsers() {
+					console.log('searchForInstagramUsers');
+					//console.log( map.getCenter() );
+
+					var centerPoint = getCenterpointFromGoogleMaps();
+					var lat = centerPoint.lat();
+					var lng = centerPoint.lng();
+
+					$.ajax({
+						url: 'https://api.instagram.com/v1/media/search?callback=?',
+						dataType: 'jsonp',
+						data: {
+							'client_id': 'my-outdated-client-id',
+							'lat': lat,
+							'lng': lng
+						},
+						success: processDataFromInstagram
+					});
+				}
+
+				function processDataFromInstagram(data) {
+					//console.log(data);
+					clearMarkers();
+					clearImages();
+					$.each(data.data, function (i, value) {
+						//console.log('value', value);
+						addImage(value.images.standard_resolution.url);
+
+						var instagramLat = value.location.latitude;
+						var instagramLng = value.location.longitude;
+
+						//Lisää markerit kartalle
+						//console.log(value.location);
+						addMarker(value, instagramLat, instagramLng);
+
+					});
+					//console.log(markers);
+				}
+
+				// lisää  kuvan slideshow:hun
+				function addImage(url) {
+
+					//console.log('addImage '+url);
+					// console.log( $(currentImage).index() );
+
+					var jQimage = $('<img>');
+					//url -> imageen mukaan
+					jQimage.attr('src', url);
+					// <img> -> divin sisään
+					imageContainer.append(jQimage);
+
+					if (jQimage.is(':first-child') === false) {
+						currentImage = jQimage;
+					} else {
+						jQimage.hide();
+					}
+					return currentImage;
+				}
+
+				function showImage(otherImage) { // TÄMÄ NÄYTTÄÄ VALITUN ELEMENTIN
+					console.log('showImage', otherImage);
+					//Piilota nykyinen kuva, joka on tallennettuna globaalissa muuttujassa.
+					currentImage.hide();
+
+					//Muuta globaalin muuttujan arvo näytettävän kuvan arvoksi.
+					currentImage = otherImage;
+
+					//Näytä valittu kuva.
+					currentImage.show();
+					//console.log(currentImage);
+
+				}
+
+				function selectMarkerImage() { // TÄMÄ VALITSEE ELEMENTIN
+					console.log("selectMarkerImage");
+					image = imageContainer.children().last();
+				}
+
+				function nextImage() { // TÄMÄ VALITSEE ELEMENTIN
+					console.log("next");
+					//var nextIndex =  $(currentImage).index() + 1;
+					// jos jquery, älä kääri uudelleen dollarimerkin sisään
+					var image = currentImage.next(); // valitse seuraava elementti
+					if (image.length === 0) { // mene listan loppuun
+						image = imageContainer.children().last();
+					}
+					showImage(image);
+					//console.log("next "+ nextIndex);
+					//return nextIndex;
+				}
+
+				function prevImage() {
+					console.log("prev");
+
+					var image = currentImage.prev();
+					if (image.length === 0) { // mene listan alkuun
+
+						image = imageContainer.children().first();
+					}
+					showImage(image);
+				}
+
+				function clearImages() {
+					imageContainer.empty();
+				}
+
+				// ----------------------------   MAP   --------------------------------
+
+				var map;
+				var markers = [];
+				var metropoliaLatLng = new google.maps.LatLng(60.22118789410723, 24.805064201354984);
+				var MY_MAPTYPE_ID = 'custom_style';
+
+				window.onload = function () {
+
+					var featureOpts = [
+						{
+							stylers: [
+								{ hue: "#ff1a00" },
+								{ invert_lightness: true },
+								{ saturation: -100 },
+								{ lightness: 33 },
+								{ gamma: 0.5 }
+							]
+						},
+						{
+							featureType: "water",
+							elementType: "geometry",
+							stylers: [
+								{ "color": "#2D333C" }
+							]
+						}
+					];
+
+					var mapOptions = {
+						zoom: 15,
+						center: metropoliaLatLng, //metropolia leppävaara
+						/*mapTypeControlOptions: {
+							mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+						},*/
+						mapTypeId: MY_MAPTYPE_ID
+					};
+
+					map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+					var styledMapOptions = {
+						name: 'Dark Style'
+					};
+
+					var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+					map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
+					console.log('map', map);
+					searchForInstagramUsers();
+
+					// DRAG LISTENER
+					google.maps.event.addListener(map, 'dragend', function () {
+
+						// 0 secons after the drag end...
+						window.setTimeout(function () {
+							//console.log('dragend');
+							searchForInstagramUsers();
+						}, 000);
+					});
+
+				};
+
+				function submitSearch(event) {
+					event.preventDefault();
+					console.log("submit");
+					var geoCoder = new google.maps.Geocoder();
+					var place = document.getElementById("searchText").value;
+					console.log("PLACE:", place);
+					geoCoder.geocode({ 'address': place }, resultHandler);
+				}
+
+				function resultHandler(results, status) {
+					console.log("RESULTS:", results[0].geometry.location); //k = lat, D = lng
+					if (status == google.maps.GeocoderStatus.OK) {
+						map.setCenter(results[0].geometry.location);
+						map.setZoom(12);
+						var lat = results[0].geometry.location.k;
+						var lng = results[0].geometry.location.D;
+						search(lat, lng);
+					}
+				}
+
+				document.getElementById("form").addEventListener("submit", submitSearch);
+
+				function getCenterpointFromGoogleMaps() {
+					return map.getCenter();
+				}
+
+				function search(lat, lng) {
+					console.log("SEARCH:");
+					console.log("lat, lng ok?");
+					console.log(lat, lng);
+
+					//HTTP GET
+					$.ajax({
+						'url': 'http://api.geonames.org/findNearbyWikipediaJSON',
+						'datatype': 'json',
+						'data': { //PARAMETRIT
+							'username': 'viltsuv',
+							'lat': lat,
+							'lng': lng,
+							'radius': 20,
+							'maxRows': 30
+						},
+						'success': addMarkerToMap(lat, lng)
+					});
+
+				}
+
+				/*
+					function processWikipediaArticles(data){
+						console.log("WIKIPEDIA DATA", data);
+						//console.log("TITLE", data.geonames[0].title);
+						var locationTitle = data.geonames;
+						
+						//locationUrl = data.geonames[0].wikipediaUrl;
+						
+						$.each(locationTitle, function (i ,val){
+							console.log("i:");
+							console.log(i);
+							console.log("VAL:");
+							console.log(val);
+							$( "#wikipediaResults" ).append("<a href=http://"+ val.wikipediaUrl +">"+ val.title +"</a></br>");
+						});
+					}
+					*/
+				function clearMarkers() {
+					//console.log('markers', markers);
+					//console.log('markers.length', markers.length);
+
+					if (markers) {
+						for (var i = 0; i < markers.length; i++) {
+							console.log('markers[' + i + ']', markers[i]);
+							markers[i].setMap(null);
+						}
+					}
+				}
+
+				function addMarker(data, lat, lng) { //Suoritetaan each-lauseessa kaikille alueelta löydetyille käyttäjille
+					console.log('addMarker data', data);
+					var coord = new google.maps.LatLng(lat, lng);
+					//console.log('markers', markers);
+
+					var instagramThumbnail = {
+						url: data.images.thumbnail.url,
+						scaledSize: new google.maps.Size(30, 30),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(0, 0)
+					};
+
+					// marker liitetään karttaan
+					var marker = new google.maps.Marker(
+						{
+							'position': coord,
+							'map': map,
+							'icon': instagramThumbnail
+						}
+					);
+
+					// Google maps marker click listener
+					google.maps.event.addListener(marker, 'click', function (data) {
+
+						console.log('marker clicked');
+						console.log("markers", markers);
+						console.log("data", data);
+						//console.log(data.user.username);
+						addUserInfo(data);
+						console.log(data.images.thumbnail.url);
+						var addedImage = addImage(data.images.standard_resolution.url);
+						showImage(addedImage);
+						//.images.standard_resolution.url;
+						console.log('markerImage clicked: url for image to be added to container ->', data.images.standard_resolution.url);
+						selectMarkerImage();
+					});
+
+					//console.log('marker', marker);
+					markers.push(marker);
+				}
+
+
+				function searchByUserName(insertedUserName) {
+					console.log("clicked Search for User button");
+					$.ajax({
+						dataType: "jsonp",
+						url: "https://api.instagram.com/v1/users/search?q=" + insertedUserName + "&client_id=my-outdated-client-id",
+						success: processUserQuery
+					});
+				}
+
+				function processUserQuery(data) {
+					console.log("processUserQuery");
+					//console.log("data", data);
+					addUserInfo(data);
+				}
+
+				function clearUserInfo() {
+					console.log("clearUserInfo");
+					$('#userInfo').text('');
+				}
+
+				// addUserInfo funktiota käytetään kahdessa tapauksessa: 
+
+				//	1. Kun painetaan "Search for User" -nappia
+				// tästä voi tulla yksi tai useita tuloksia
+
+				//	2. Kun klikataan markeria
+				// tästä yksi tulos
+
+				function addUserInfo(data) {
+
+					console.log("addUserInfo");
+					console.log("addUserInfo data", data);
+					console.log("data.data.length", data.data.length);
+
+					if (data.data.length > 1) { // jos tuloksia useampi kuin yksi, ne listataan linkkeinä ja ensimmäisen tuloksen kuva lisätään 
+						clearUserInfo();
+						$.each(data.data, function (i, value) {
+							$('#userInfo').append(
+								'<a href=http://the-photo-flow.com/users/?profile=' +
+								data.data[i].username + // linkin teksti
+								'>' +
+								data.data[i].username + // HTML teksti
+								'</a>' +
+								'<br/>');
+
+							//console.log('value', value);
+							//Lisää markerit kartalle
+							//console.log(value.location);
+							//addMarker(value, instagramLat, instagramLng);
+						});
+
+						//data.data[0].profile_picture
+						console.log("data.data[0].profile_picture", data.data[0].profile_picture);
+						var firstResultProfilePic = data.data[0].profile_picture;
+						showImage(addImage(firstResultProfilePic));
+
+					} else {
+						console.log("data.data.length - tän pitäis olla 0:", data.data.length);
+						$('#userInfo').text('Username not found :(');
+					}
+
+					//clearUserInfo();
+					//var username = data.data.value.username;
+					//console.log("username", username);
+
+					//$('#userInfo').text(username);
+					//console.log("y u no work");
+
+
+				}
+
+				/*
+				// While hovering over links - doesn't work the way I want
+				$('profileImg').on('mouseenter', function() {
+					this.iid = setInterval(function() {
+						 // do something           
+					}, 25);
+				}).on('mouseleave', function(){
+					this.iid && clearInterval(this.iid);
+				});
+				
+				function updateProfileImgPosition( e ) {
+					var profileImg = document.getElementById("profileImg");
+					profileImg.style.left = e.x + "px";
+					profileImg.style.top = e.y + "px";
+				}
+				*/
+
+
+			});
+		</script>
+
+	</body>
+
+</html>
