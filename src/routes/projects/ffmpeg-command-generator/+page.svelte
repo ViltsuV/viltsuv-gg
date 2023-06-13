@@ -16,12 +16,12 @@
 
   <GlobalOptions />
   
-  {#each $inputs as input}
-    <InputSection {input} />
+  {#each $inputs as input, i}
+    <InputSection {input} index={i} />
   {/each}
 
-  {#each $outputs as output}
-    <OutputSection {output}/>
+  {#each $outputs as output, i}
+    <OutputSection {output} index={i}/>
   {/each}
 
   <GeneratedCommand show_info_and_usage={false} />

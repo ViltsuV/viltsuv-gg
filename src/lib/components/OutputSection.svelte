@@ -5,6 +5,7 @@
 	import Expandable from "$lib/components/Expandable.svelte"
 	import VideoSettings from "$lib/components/VideoSettings.svelte"
 
+  export let index: number
 	export let output: FFMPEG_Output
 	import { RadioGroup, RadioItem } from "@skeletonlabs/skeleton"
 
@@ -13,10 +14,10 @@
   let video_enabled = true
   let audio_enabled = false
 
-  $: output_container = video_enabled ? output_video_container : output_audio_container
+  // $: output_container = video_enabled ? output_video_container : output_audio_container
 </script>
 
-<fieldset class="bordered"><legend>Output</legend>
+<fieldset class="bordered"><legend>Output [{index}]</legend>
   <fieldset class="bordered"><legend>Options</legend>
 
     <label class="flex items-center space-x-2">

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { FFMPEG_Input } from "$lib/types"
 
+  export let index: number
 	export let input: FFMPEG_Input
 
 </script>
 
-<fieldset class="bordered"><legend>Input</legend>
+<fieldset class="bordered"><legend>Input [{index}]</legend>
 
   <fieldset class="bordered"><legend>Options</legend>
   </fieldset>
