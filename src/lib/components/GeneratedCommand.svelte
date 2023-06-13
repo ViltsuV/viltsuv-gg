@@ -1,0 +1,108 @@
+<script lang="ts">
+	import Expandable from '$lib/components/Expandable.svelte'
+  import { 
+    global_options,
+    inputs,
+    outputs,
+  } from '$lib/stores'
+
+  // component
+  export let show_info_and_usage: boolean = true
+</script>
+
+<h4 class="mt-4">Generated command:</h4>
+<pre
+  class="output-command"><span>ffmpeg </span><span
+  class="cmd-global-options">{        `${$global_options} `     }</span>{#each $inputs as input}<span
+  class="cmd-input-file-options">{    `${input.options} ` }</span><span
+  class="cmd-input-file">{         `-i ${input.path} `         }</span>{/each}{#each $outputs as output}<span
+  class="cmd-output-file-options">{   `${output.options} `}</span><span
+  class="cmd-output-file">{              output.path           }</span>{/each}</pre>
+
+<button
+  type="button"
+  class="btn variant-filled-surface my-4"
+  on:click={() => { show_info_and_usage = !show_info_and_usage }}
+>
+  { show_info_and_usage === true ? 'hide' : 'show' } info & usage
+</button>
+
+<Expandable expanded={show_info_and_usage}>
+  <div class="info-and-usage">
+    <fieldset><legend>FFMPEG command structure</legend>
+      <pre class="ffmpeg-command-structure"><span 
+        class="executable"         >ffmpeg </span><span 
+        class="global_options"     >[global_options] </span><span 
+        class="input_file"         >{'{'}</span><span 
+        class="input_file_options" >[input_file_options] </span><span 
+        class="input_file"         >{'-i input_file} '}</span><span 
+        class="output_file"        >{'{'}</span><span 
+        class="output_file_options">[output_file_options] </span><span 
+        class="output_file"        >{'output_file}'}</span></pre>
+      
+      For example:
+      <pre class="example-command">ffmpeg -i input_file.mp4 -b:v 64k -bufsize 64k output_file.mp4</pre>
+      Your options:<br /><br />
+      <div class="table-container">
+        <table class="table table-hover">
+          <thead>
+          </thead>
+          <tbody>
+            <tr>
+              <td>global options</td>				
+              <td class="cmd-global-options" style="color: #fdabc7">a</td>
+            </tr>
+            <tr>
+              <td>input options</td>	
+              <td class="cmd-input-file-options" style="color: #aed5fc">a</td>
+            </tr>
+            <tr>
+              <td>input path / file</td>					
+              <td class="cmd-input-file" style="color: #2b9eff">a</td>
+            </tr>
+            <tr>
+              <td>output options</td>	
+              <td class="cmd-output-file-options" style="color: #9ff28c">a</td>
+            </tr>
+            <tr>
+              <td>output path / file</td>						
+              <td class="cmd-output-file" style="color: #41f218">a</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+</Expandable>
+<style lang="postcss">
+  fieldset {
+    @apply pl-2 pb-2 pr-2;
+  }
+  /* legend {
+    @apply text-tertiary-500 text-lg
+  } */
+  .global_options, .cmd-global-options {
+    background-color: rgba(255, 126, 253, 0.2);
+    color: rgb(254, 173, 253);
+  }
+  .input_file, .cmd-input-file {
+    background-color: rgba(43, 158, 255, 0.2);
+    color: rgba(43, 158, 255, 1);
+  }
+  .input_file_options, .cmd-input-file-options {
+    background-color: rgba(43, 158, 255, 0.2);
+    color: rgb(193, 224, 255);
+  }
+  .output_file, .cmd-output-file {
+    background-color: rgba(65, 242, 24, 0.2);
+    color: rgb(65, 242, 24);
+  }
+  .output_file_options, .cmd-output-file-options {
+    background-color: rgba(65, 242, 24, 0.2);
+    color: rgb(211, 255, 201);
+  }
+  /* .info-and-usage {
+    @apply bg-surface-400-500-token;
+    
+  } */
+</style>

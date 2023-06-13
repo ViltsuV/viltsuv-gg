@@ -81,6 +81,7 @@ export type SupportedVideoEncoders =
 
 export type SupportedAudioEncoders = 
 'copy' |
+'aac' |
 'libvo_aacenc' |
 'libmp3lame' |
 'opus' |

@@ -1,0 +1,255 @@
+<script lang="ts">
+	import { RadioGroup, RadioItem, RangeSlider } from "@skeletonlabs/skeleton"
+	import Expandable from '$lib/components/Expandable.svelte'
+	import PresetExplainer_x264 from '$lib/components/PresetExplainer_x264.svelte'
+  import type { SupportedRateControlModes, SupportedVideoEncoders } from '$lib/types'
+  
+  export let rate_control_mode: SupportedRateControlModes = 'crf'
+
+  const VP_CRF_MAX = 63
+  const VP_RECOMMENDED_MIN = 15
+  const VP_RECOMMENDED_MAX = 35
+
+  let libx264 = {
+    preset: {
+      default: 'medium',
+      value: 'medium',
+      values: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
+    },
+    profile: {
+      default: 'high',
+      value: 'high',
+      values: ['baseline', 'main', 'high','high10','high422','high444'],
+    },
+    tune: {
+      default: 'none',
+      value: 'none',
+      values: ['none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
+    },
+    level: {
+      default: 'auto',
+      value: 'auto',
+      values: ['auto', '1', '1.1', '1.2', '1.3', '2', '2.1', '2.2', '3', '3.1', '3.2', '4', '4.1', '4.2', '5', '5.1', '5.1'],
+    },
+    rate_control: {
+      default: 'crf',
+      mode: 'crf',
+      modes: ['crf', 'abr'],
+    },
+    crf: {
+      default: 23,
+      max: 51,
+      min: 0,
+      value: 23,
+    },
+    abr: {
+      unit: 'kbps',
+      value: 4000,
+    },
+    max_bitrate: {
+      unit: 'kbps',
+      value: 4000,
+    },
+    buffer_size: {
+      unit: 'kbps',
+      value: 8000,
+    },
+    fastdecode: {
+      default: false,
+      value: false,
+    },
+    zerolatency: {
+      default: false,
+      value: false,
+    }
+  }
+
+  let showing_crf_explainer = false
+  let showing_preset_explainer = false
+  let showing_profile_explainer = false
+  let showing_tune_explainer = false
+  let showing_abr_explainer = false
+
+  let video_preset = 'medium'
+
+  let crf_slider = libx264.crf.default
+
+</script>
+
+<fieldset class="bordered"><legend>x264 Options</legend>
+  <!-- PRESET -->
+  <div class="flex flex-row mt-2">
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+      <div class="input-group-shim">Preset</div>
+      <select class="select" bind:value={libx264.preset.value}>
+        <option value="ultrafast">ultrafast</option>
+        <option value="superfast">superfast</option>
+        <option value="veryfast">veryfast</option>
+        <option value="faster">faster</option>
+        <option value="fast">fast</option>
+        <option value="medium">medium (default)</option>
+        <option value="slow">slow</option>
+        <option value="slower">slower</option>
+        <option value="veryslow">veryslow</option>
+        <option value="placebo" 
+          title="increases encoding time significantly and increases visual quality by a miniscule amount compared to veryslow"
+        >
+          placebo (don't use this)
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-icon variant-filled-surface ml-2"
+      title="{showing_preset_explainer ? "close" : "open"} preset explainer"
+      on:click={() => showing_preset_explainer = !showing_preset_explainer}
+    >?</button>
+  </div>
+  <Expandable expanded={showing_preset_explainer} overflow='auto'>
+    <div class="pt-2">
+      <PresetExplainer_x264 />
+    </div>
+  </Expandable>
+  
+  <!-- PROFILE -->
+  <div class="flex flex-row mt-2">
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+      <div class="input-group-shim">Profile</div>
+      <select class="select" bind:value={libx264.profile.value}>
+        <option value="baseline">baseline</option>
+        <option value="main">main</option>
+        <option value="high">high (default)</option>
+        <option value="high10">high10</option>
+        <option value="high422">high422</option>
+        <option value="high444">high444</option>
+      </select>
+    </div>
+
+    <button class="btn btn-icon variant-filled-surface ml-2"
+      title="{showing_profile_explainer ? "close" : "open"} profile explainer"
+      on:click={() => showing_profile_explainer = !showing_profile_explainer}
+    >?</button>
+  </div>
+  <Expandable expanded={showing_profile_explainer} overflow='auto'>
+    <div class="pt-2">
+      TODO: profile explainer
+      <!-- <ProfileExplainer_x264 /> -->
+    </div>
+  </Expandable>
+
+  <!-- TUNE -->
+  <div class="flex flex-row mt-2">
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+      <div class="input-group-shim">Tune</div>
+      <select class="select" bind:value={libx264.tune.value}>
+        <option value="none">none (default)</option>
+        <option value="film">film</option>
+        <option value="animation">animation</option>
+        <option value="grain">grain</option>
+        <option value="stillimage">stillimage</option>
+        <option value="psnr">psnr</option>
+        <option value="ssim">ssim</option>
+      </select>
+    </div>
+
+    <button class="btn btn-icon variant-filled-surface ml-2"
+      title="{showing_tune_explainer ? "close" : "open"} tune explainer"
+      on:click={() => showing_tune_explainer = !showing_tune_explainer}
+    >?</button>
+  </div>
+  <Expandable expanded={showing_tune_explainer} overflow='auto'>
+    <div class="pt-2">
+      TODO: Tune explainer
+      <!-- <TuneExplainer_x264 /> -->
+    </div>
+  </Expandable>
+
+  <!-- RATE CONTROL -->
+  <RadioGroup 
+    active="variant-filled-tertiary" 
+    hover="hover:variant-soft-primary" 
+    class="mb-3"
+  >
+    <RadioItem 
+      bind:group={rate_control_mode} 
+      name="rate-control" 
+      value={'abr'}
+      title="average bitrate"
+    >
+      ABR
+    </RadioItem>
+    <RadioItem 
+      bind:group={rate_control_mode} 
+      name="rate-control" 
+      value={'crf'}
+      title="constant rate factor"
+    >
+      CRF
+    </RadioItem>
+  </RadioGroup>
+
+  <Expandable expanded={rate_control_mode === 'crf'}>
+    <div class="flex items-center">
+      <RangeSlider
+        name="range-slider"
+        class="flex-grow"
+        bind:value={crf_slider}
+        min={libx264.crf.min}
+        max={libx264.crf.max}
+        step={1}
+        ticked
+      >
+        <div class="flex justify-center">
+          <div class="text-sm pl-3">{crf_slider} / {libx264.crf.max}</div>
+        </div>
+      </RangeSlider>
+      <button class="btn btn-icon variant-filled-surface ml-2"
+        title="{showing_crf_explainer ? "close" : "open"} constant rate factor explainer"
+        on:click={() => showing_crf_explainer = !showing_crf_explainer}
+      >?</button>
+    </div>
+    
+    <Expandable expanded={showing_crf_explainer} overflow='auto'>
+      <div class="pt-2">
+        TODO: CRF explainer
+        <!-- <CRF_Explainer_x264 /> -->
+      </div>
+    </Expandable>
+
+  </Expandable>
+  <Expandable expanded={rate_control_mode === 'abr'}>
+    <div class="flex flex-row">
+      <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+        <div class="input-group-shim">Bitrate</div>
+        <input type="number" name="bitrate-value" />
+        <select class="select" name="bitrate-unit">
+          <option value="kbps">Kbps</option>
+          <option value="mbps">Mbps</option>
+        </select>
+      </div>
+      <button class="btn btn-icon variant-filled-surface ml-2"
+        title="{showing_abr_explainer ? "close" : "open"} average bitrate explainer"
+        on:click={() => showing_abr_explainer = !showing_abr_explainer}
+      >?</button>
+    </div>
+    
+    <Expandable expanded={showing_abr_explainer} overflow='auto'>
+      <div class="pt-2">
+        TODO: ABR explainer
+        <!-- <ABR_Explainer_x264 /> -->
+      </div>
+    </Expandable>
+  </Expandable>
+
+</fieldset>
+
+<style lang="postcss">
+  fieldset {
+    @apply pl-2 pb-2 pr-2;
+  }
+  legend {
+    @apply text-tertiary-500 text-lg px-1
+  }
+  .bordered {
+    @apply border border-tertiary-500
+  }
+</style>
