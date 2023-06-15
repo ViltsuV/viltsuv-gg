@@ -36,7 +36,7 @@
       -max_error_rate maximum error rate  ratio of decoding errors (0.0: no errors, 1.0: 100% errors) above which ffmpeg returns an error instead of success. -->
 
       <div class="flex flex-row items-center">
-        <div class="mr-3">Overwrite ouput files? </div>
+        <div class="mr-3">Overwrite output files? </div>
         <RadioGroup active="variant-filled-tertiary" hover="hover:variant-soft-primary">
           <RadioItem bind:group={options.overwriting} name="overwriting" value={'ask'} >Ask</RadioItem>
           <RadioItem bind:group={options.overwriting} name="overwriting" value={'never'} >Never</RadioItem>
