@@ -38,8 +38,11 @@
         <option value="libvpx-vp9">VP9 (libvpx-vp9)</option>
         <option value="vp9_qsv">Intel Quick Sync VP9 (vp9_qsv)</option>
       </optgroup> -->
+
+      <!-- https://trac.ffmpeg.org/wiki/Encode/AV1 -->
+      <!-- https://ffmpeg.org/ffmpeg-codecs.html#libaom_002dav1 -->
       <!-- <optgroup label="AV1">
-        <option value="libaom-av1">AOMedia AV1 (libaom-av1)</option>
+        <option value="libaom-av1">AOMedia AV1 (reference encoder) (libaom-av1)</option>
         <option value="librav1e">Rust AV1 (librav1e)</option>
         <option value="libsvtav1">SVT-AV1 Intel/Netflix Scalable Video Technology (libsvtav1)</option>
         <option value="av1_nvenc">NVIDIA NVENC AV1 (av1_nvenc)</option>
