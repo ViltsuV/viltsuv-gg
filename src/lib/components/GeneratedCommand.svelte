@@ -1,19 +1,20 @@
 <script lang="ts">
 	import Expandable from '$lib/components/Expandable.svelte'
   import { 
-    global_options,
+    ffmpeg_options,
     inputs,
     outputs,
   } from '$lib/stores'
 
-  // component
   export let show_info_and_usage: boolean = true
+  
+  $: global_options = $ffmpeg_options.global
 </script>
 
 <h4 class="mt-4">Generated command:</h4>
 <pre
   class="output-command"><span>ffmpeg </span><span
-  class="cmd-global-options">{        `${$global_options} `     }</span>{#each $inputs as input}<span
+  class="cmd-global-options">{        `${global_options} `     }</span>{#each $inputs as input}<span
   class="cmd-input-file-options">{    `${input.options} ` }</span><span
   class="cmd-input-file">{         `-i ${input.path} `         }</span>{/each}{#each $outputs as output}<span
   class="cmd-output-file-options">{   `${output.options} `}</span><span
