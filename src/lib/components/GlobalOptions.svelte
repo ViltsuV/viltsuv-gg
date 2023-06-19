@@ -1,26 +1,21 @@
 <script lang="ts">
-	import type { FFMPEG_GlobalOptions } from "$lib/types"
   import { RadioGroup, RadioItem } from "@skeletonlabs/skeleton"
 	import Expandable from "$lib/components/Expandable.svelte"
-  
-  export let options: FFMPEG_GlobalOptions
+  import { command } from "$lib/stores"
 
   let global_options_tooltip = 'use global options'
 </script>
 
-
-
-<fieldset class:bordered={options.use_global_options} class="mt-3">
+<fieldset class:bordered={$command.global_options.use_global_options} class="mt-3">
   <legend>
     <div class="flex flex-row items-center justify-center">
-      <input class="checkbox" type="checkbox" bind:checked={options.use_global_options}>
+      <input class="checkbox" type="checkbox" bind:checked={$command.global_options.use_global_options}>
       <div class="flex flex-row pl-2">
         <div title={global_options_tooltip}>Global Options</div>
       </div>
     </div>
   </legend>
-  <Expandable expanded={options.use_global_options}>
-
+  <Expandable expanded={$command.global_options.use_global_options}>
     <!-- Global options (affects the whole program instead of just one file):
 
       -loglevel loglevel  set logging level
@@ -38,9 +33,9 @@
       <div class="flex flex-row items-center">
         <div class="mr-3">Overwrite output files? </div>
         <RadioGroup active="variant-filled-tertiary" hover="hover:variant-soft-primary">
-          <RadioItem bind:group={options.overwriting} name="overwriting" value={'ask'} >Ask</RadioItem>
-          <RadioItem bind:group={options.overwriting} name="overwriting" value={'never'} >Never</RadioItem>
-          <RadioItem bind:group={options.overwriting} name="overwriting" value={'always'} >Always</RadioItem>
+          <RadioItem bind:group={$command.global_options.overwriting} name="overwriting" value={'ask'} >Ask</RadioItem>
+          <RadioItem bind:group={$command.global_options.overwriting} name="overwriting" value={'never'} >Never</RadioItem>
+          <RadioItem bind:group={$command.global_options.overwriting} name="overwriting" value={'always'} >Always</RadioItem>
         </RadioGroup>
       </div>
 
@@ -83,12 +78,6 @@
       -qsv_device device  set QSV hardware device (DirectX adapter index, DRM path or X11 display name)
       -init_hw_device args  initialise hardware device
       -filter_hw_device device  set hardware device used when filtering -->
-
-
-
-    
-    
-
 
   </Expandable>
 </fieldset>
