@@ -4,7 +4,7 @@
   import InputSection from "$lib/components/InputSection.svelte"
 	import OutputSection from "$lib/components/OutputSection.svelte"
   
-	import { inputs, outputs, ffmpeg_options } from "$lib/stores"
+	import { command } from "$lib/stores"
 
   // import type { PageData } from './$types'
   
@@ -14,14 +14,14 @@
 <div class="container h-full px-2 mx-auto justify-center items-center">
   <h1 class="gradient-heading mt-4 mb-6">FFMPEG Command Generator</h1>
 
-  <GlobalOptions options={$ffmpeg_options.global} />
+  <GlobalOptions />
   
-  {#each $inputs as input, i}
+  {#each $command.inputs as input, i}
     <InputSection {input} index={i} />
   {/each}
 
-  {#each $outputs as output, i}
-    <OutputSection {output} index={i}/>
+  {#each $command.outputs as output, i}
+    <OutputSection {output} index={i} />
   {/each}
 
   <GeneratedCommand show_info_and_usage={false} />
