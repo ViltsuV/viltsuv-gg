@@ -2,75 +2,21 @@
 	import { RadioGroup, RadioItem, RangeSlider } from "@skeletonlabs/skeleton"
 	import Expandable from '$lib/components/Expandable.svelte'
 	import PresetExplainer_x264 from '$lib/components/PresetExplainer_x264.svelte'
-  import type { SupportedRateControlModes, SupportedVideoEncoders } from '$lib/types'
+  import type { RateControlModes, VideoEncoderOptions_libx264, VideoEncoders } from '$lib/types'
   
-  export let rate_control_mode: SupportedRateControlModes = 'crf'
+  export let rate_control_mode: RateControlModes = 'crf'
 
   const VP_CRF_MAX = 63
   const VP_RECOMMENDED_MIN = 15
   const VP_RECOMMENDED_MAX = 35
 
-  let libx264 = {
-    preset: {
-      default: 'medium',
-      value: 'medium',
-      values: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
-    },
-    profile: {
-      default: 'high',
-      value: 'high',
-      values: ['baseline', 'main', 'high','high10','high422','high444'],
-    },
-    tune: {
-      default: 'none',
-      value: 'none',
-      values: ['none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
-    },
-    level: {
-      default: 'auto',
-      value: 'auto',
-      values: ['auto', '1', '1.1', '1.2', '1.3', '2', '2.1', '2.2', '3', '3.1', '3.2', '4', '4.1', '4.2', '5', '5.1', '5.1'],
-    },
-    rate_control: {
-      default: 'crf',
-      mode: 'crf',
-      modes: ['crf', 'abr'],
-    },
-    crf: {
-      default: 23,
-      max: 51,
-      min: 0,
-      value: 23,
-    },
-    abr: {
-      unit: 'kbps',
-      value: 4000,
-    },
-    max_bitrate: {
-      unit: 'kbps',
-      value: 4000,
-    },
-    buffer_size: {
-      unit: 'kbps',
-      value: 8000,
-    },
-    fastdecode: {
-      default: false,
-      value: false,
-    },
-    zerolatency: {
-      default: false,
-      value: false,
-    }
-  }
+  export let libx264: VideoEncoderOptions_libx264
 
   let showing_crf_explainer = false
   let showing_preset_explainer = false
   let showing_profile_explainer = false
   let showing_tune_explainer = false
   let showing_abr_explainer = false
-
-  let video_preset = 'medium'
 
   let crf_slider = libx264.crf.default
 
