@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { FFMPEG_Input } from "$lib/types"
+	import PerFileInputOptions from "$lib/components/PerFileInputOptions.svelte"
 
   export let index: number
 	export let input: FFMPEG_Input
@@ -8,12 +9,16 @@
 
 <fieldset class="bordered"><legend>Input [{index}]</legend>
 
-  <fieldset class="bordered"><legend>Options</legend>
+  <fieldset class="bordered flex flex-col"><legend>Per-File Input Options</legend>
+    <PerFileInputOptions />
+    
   </fieldset>
+  <div>input video streams & per-stream options</div>
+  <div>input audio streams & per-stream options</div>
 
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Input</div>
-    <input type="text" bind:value={input.path} placeholder="input (e.g. C:\videos\input.mp4)" />
+    <input type="text" bind:value={input.url} placeholder="input (e.g. C:\videos\input.mp4)" />
   </div>
 </fieldset>
 
