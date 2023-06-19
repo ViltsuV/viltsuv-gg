@@ -2,9 +2,17 @@
 	import VideoCodecOptions_x264 from '$lib/components/VideoCodecOptions_x264.svelte'
 	import Expandable from '$lib/components/Expandable.svelte'
 
-  import type { SupportedVideoEncoders } from '$lib/types'
+  import type { 
+    FFMPEG_OutputPerFileMainOptions,
+    VideoEncoders
+  } from '$lib/types'
 
-  let selected_encoder: SupportedVideoEncoders = 'copy'
+  export let output_per_file_options: FFMPEG_OutputPerFileMainOptions
+  export let index: number
+
+  $: video_encoder_options = output_per_file_options.c.v.encoder_options
+
+  let selected_encoder: VideoEncoders = 'copy'
   let constrain_bitrate = false
   let vbv_tooltip = "Only recommended for situations where the conditions \ncall for constrained bitrate, such as: \n\n- streaming video over a low-bandwidth network, or \n- limited decoder capability."
 
@@ -13,7 +21,6 @@
   
   let maxrate_unit: 'mbps' | 'kbps' = 'mbps'
 </script>
-
 
 <fieldset class="bordered"><legend>Video</legend>
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
@@ -54,7 +61,7 @@
   </div>
   
   <Expandable expanded={selected_encoder === 'libx264'}>
-    <VideoCodecOptions_x264 />
+    <VideoCodecOptions_x264 libx264={video_encoder_options.libx264} />
   </Expandable>
   <fieldset class:bordered={constrain_bitrate} class="mt-3"> <!-- Constrain Bitrate -->
     <legend>
@@ -104,6 +111,8 @@
     </Expandable>
   </fieldset>
 </fieldset>
+
+<div>per-stream video options: video [{index}]</div>
 
 <style lang="postcss">
   .checkbox:checked {
