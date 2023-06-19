@@ -27,6 +27,8 @@
   -discard            discard
   -disposition        disposition -->
 
+  per-file input video options<br/>
+  per-file input audio options
 
 <!-- Advanced per-file options:
 
@@ -74,5 +76,15 @@
   -dcodec codec       force data codec ('copy' to copy stream) -->
 
 <style lang="postcss">
-
+  fieldset {
+    @apply pl-2 pb-2 pr-2;
+    border-width: 1px;
+    border-color: transparent;
+  }
+  .bordered {
+    @apply border border-tertiary-500;
+  }
+  legend {
+    @apply text-tertiary-500 text-lg px-1;
+  }
 </style>
