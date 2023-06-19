@@ -56,12 +56,10 @@ export type Projects = Project[]
 
 // FFMPEG-Command-Generator
 
-export type FFMPEG_Options = {
-  global: FFMPEG_GlobalOptions
-  per_file_main: FFMPEG_PerFileMainOptions
-  video: FFMPEG_VideoOptions
-  audio: FFMPEG_AudioOptions
-  subtitle: FFMPEG_SubtitleOptions
+export type FFMPEG_Command = {
+  global_options: FFMPEG_GlobalOptions
+  inputs: FFMPEG_Input[]
+  outputs: FFMPEG_Output[]
 }
 
 /** 
@@ -197,6 +195,152 @@ export type FFMPEG_AdvancedGlobalOptions = {
 }
 
 /**
+ * @description common per-file options that both inputs and outputs can have.
+ * This is extended to input and output specific types.
+ */
+export type FFMPEG_CommonPerFileMainOptions = {
+  /**
+   * @description disable video for the input or output.
+   * This is an input/output level flag that can be set
+   * per input or output for all streams
+   * @kind (input/output)
+   */
+  vn: boolean | null
+  /**
+   * @description disable audio for the input or output.
+   * This is an input/output level flag that can be set
+   * per input or output for all streams
+   * @kind (input/output)
+   */
+  an: boolean | null
+  /**
+   * @description force input/output format
+   * input: normally auto detected for input files
+   * output: guessed from the file extension for output files
+   * so this option is not needed in most cases
+   * @kind (input/output)
+   */
+  f: string | null
+  /**
+   * @description record or transcode "duration" seconds of audio/video (see FFMPEG_TimeUnit)
+   * 
+   * note: -to and -t are mutually exclusive and -t has priority
+   * 
+   * @kind (input/output)
+   * @example
+   * as input option:
+   * limit the duration of data read from the input file
+   * 
+   * as output option: 
+   * stop writing the output after its duration reaches duration
+   */
+  t: FFMPEG_Time | null
+  /**
+   * @description record or transcode stop time (see FFMPEG_TimeUnit).
+   * 
+   * - input: Stop reading the input at position
+   * 
+   * - output: Stop writing the output at position
+   * 
+   * note: -to and -t are mutually exclusive and -t has priority
+   * 
+   * @kind (input/output)
+   * @example stop writing 60s from beginning of file
+   * 
+   * ffmpeg -i input -to 60 -c copy output
+   */
+  to: FFMPEG_Time | null
+  /**
+   * @docs https://ffmpeg.org/ffmpeg-all.html#Main-options
+   * @description set the start time offset (see FFMPEG_TimeUnit)
+   * @kind (input/output)
+   * 
+   */
+  ss: FFMPEG_Time | null
+  /**
+   * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
+   * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
+   * @kind (input)
+   */
+  sseof?: FFMPEG_Time | null
+  advanced: FFMPEG_AdvancedPerFileMainOptions
+}
+
+export type FFMPEG_OutputPerFileMainOptions = 
+  FFMPEG_CommonPerFileMainOptions & {
+    /**
+     * @description Select an encoder (when used before an output file) 
+     * for one or more streams. 
+     * codec is the name of a encoder or a special value copy (output only) 
+     * to indicate that the stream is not to be re-encoded.
+     * @kind (input/output,per-stream)
+     * @example 
+     * // for output: use 'aac' and 'libx264' encoders for all audio & video streams
+     * ffmpeg -i INPUT -c:a aac -c:v libx264 OUTPUT.mp4
+     */
+    c: {
+      v: {
+        encoder_options: FFMPEG_VideoEncoderOptions
+        value: VideoEncoders
+      }
+      a: {
+        encoder_options: FFMPEG_AudioEncoderOptions
+        value: AudioEncoders
+      }
+      s?: null | string // todo subtitles
+      d?: null | string // todo data streams
+    }
+    /**
+     * @description set the recording timestamp ('now' to set the current time)
+     * @kind (output)
+     */
+    timestamp?: FFMPEG_Date | 'now' | null
+    /**
+     * @description add metadata to transcoded file.
+     * @kind (output,per-metadata)
+     * @example -metadata key=value
+     * -metadata title="my title"
+     * 
+     * set the language of the first audio stream
+     * -metadata:s:a:0 language=eng
+     */
+    metadata?: string[] | null
+  }
+
+export type FFMPEG_InputPerFileMainOptions =
+  FFMPEG_CommonPerFileMainOptions & {
+    /**
+     * @description Select a decoder for an input file for one or more streams. 
+     * Codec is the name of a decoder. Decoders don't need to be specified, 
+     * but this should be an option eventually for the cases when a decoder needs 
+     * to be specified (e.g. hw accelerated decoding).
+     * @kind (input/output,per-stream)
+     * @example 
+     * // for input: use 'aac' and 'h264_cuvid' decoders for all audio & video streams
+     * ffmpeg -c:a aac -c:v h264_cuvid -i INPUT
+     */
+    c: {
+      v: {
+        decoder_options: FFMPEG_VideoDecoderOptions
+        value: VideoDecoders
+      }
+      a: {
+        decoder_options: FFMPEG_AudioDecoderOptions
+        value: AudioDecoders
+      }
+      s?: null | string // todo subtitles
+      d?: null | string // todo data streams
+    }
+    /**
+     * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
+     * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
+     * @kind (input)
+     */
+    sseof?: FFMPEG_Time | null
+    advanced: FFMPEG_AdvancedPerFileMainOptions
+  }
+
+/**
  * @description represents supported FFMPEG's per-file main options.
 
   Per-file main options:
@@ -258,38 +402,87 @@ export type FFMPEG_PerFileMainOptions = {
    * // for output: use 'aac' and 'libx264' encoders for all audio & video streams
    * ffmpeg -i INPUT -c:a aac -c:v libx264 OUTPUT.mp4
    */
-  c: null | string
+  c: {
+    v: {
+      encoder_options: FFMPEG_VideoEncoderOptions
+      decoder_options?: FFMPEG_VideoDecoderOptions
+      value: VideoEncoders
+    }
+    a?: {
+      encoder_options?: FFMPEG_AudioEncoderOptions
+      decoder_options?: FFMPEG_AudioDecoderOptions | null | string
+      value: VideoEncoders | null | string
+    }
+    s?: null | string // todo subtitles
+    d?: null | string // todo data streams
+  }
+  /**
+   * @description disable video for the input or output.
+   * This is an input/output level flag that can be set
+   * per input or output for all streams
+   */
+  vn: boolean | null
+  /**
+   * @description disable audio for the input or output.
+   * This is an input/output level flag that can be set
+   * per input or output for all streams
+   */
+  an: boolean | null
   /**
    * @description force input/output format
+   * input: normally auto detected for input files
+   * output: guessed from the file extension for output files
+   * so this option is not needed in most cases
    * @kind (input/output)
    */
   f: string | null
   /**
    * @description record or transcode "duration" seconds of audio/video (see FFMPEG_TimeUnit)
+   * 
+   * note: -to and -t are mutually exclusive and -t has priority
+   * 
    * @kind (input/output)
+   * @example
+   * as input option:
+   * limit the duration of data read from the input file
+   * 
+   * as output option: 
+   * stop writing the output after its duration reaches duration
    */
   t: FFMPEG_Time | null
   /**
-   * @description record or transcode stop time (see FFMPEG_TimeUnit)
+   * @description record or transcode stop time (see FFMPEG_TimeUnit).
+   * 
+   * - input: Stop reading the input at position
+   * 
+   * - output: Stop writing the output at position
+   * 
+   * note: -to and -t are mutually exclusive and -t has priority
+   * 
    * @kind (input/output)
+   * @example stop writing 60s from beginning of file
+   * 
+   * ffmpeg -i input -to 60 -c copy output
    */
   to: FFMPEG_Time | null
   /**
    * @docs https://ffmpeg.org/ffmpeg-all.html#Main-options
    * @description set the start time offset (see FFMPEG_TimeUnit)
    * @kind (input/output)
+   * 
    */
   ss: FFMPEG_Time | null
   /**
-   * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit)
+   * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
+   * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
    * @kind (input)
    */
-  sseof: FFMPEG_Time | null
+  sseof?: FFMPEG_Time | null
   /**
    * @description set the recording timestamp ('now' to set the current time)
    * @kind (output)
    */
-  timestamp: FFMPEG_Date | 'now' | null
+  timestamp?: FFMPEG_Date | 'now' | null
   /**
    * @description add metadata to transcoded file.
    * @kind (output,per-metadata)
@@ -299,7 +492,7 @@ export type FFMPEG_PerFileMainOptions = {
    * set the language of the first audio stream
    * -metadata:s:a:0 language=eng
    */
-  metadata: string | null
+  metadata?: string[] | null
   advanced: FFMPEG_AdvancedPerFileMainOptions
 }
 
@@ -515,7 +708,7 @@ export type FFMPEG_AdvancedVideoOptions = {
    * @description use HW accelerated decoding
    * @kind (input,per-stream)
    */
-  hwaccel: null | 'none' | 'auto' | 'cuda' | 'dxva2' | 'qsv' | 'd3d11va' | 'opencl' | 'vulkan' | 'vdpau' | 'vaapi'
+  hwaccel: HWAccels
   /**
    * @description select a device for HW acceleration
    * @kind (input,per-stream)
@@ -611,6 +804,24 @@ export type FFMPEG_AdvancedAudioOptions = {}
  */
 export type FFMPEG_SubtitleOptions = {}
 
+export type FFMPEG_VideoEncoderOptions = {
+  libx264: VideoEncoderOptions_libx264
+}
+
+export type FFMPEG_VideoDecoderOptions = {
+  // todo e.g. h264_cuvid, hevc_cuvid, etc.
+}
+
+export type FFMPEG_AudioEncoderOptions = {
+  aac: AudioEncoderOptions_aac
+}
+
+export type FFMPEG_AudioDecoderOptions = {
+  // todo e.g. aac, mp3, opus/libopus etc.
+}
+
+export type BitrateUnit = 'K' | 'M'
+
 /**
  * @description describes all possible ways to express a unit of time that FFMPEG can interpret
  * @example [-][HH:]MM:SS[.m...]
@@ -644,41 +855,56 @@ export type FFMPEG_Time = string
 export type FFMPEG_Date = string | 'now'
 
 export type FFMPEG_Input = {
-  options: string,
-  path: string
+  url: string
+  per_file_main_options: FFMPEG_InputPerFileMainOptions
+  streams: Stream[]
 }
 
 export type FFMPEG_Output = {
-  options: string,
-  path: string
+  url: string
+  per_file_main_options: FFMPEG_OutputPerFileMainOptions
+  streams: Stream[]
 }
 
-export type SupportedVideoEncoders = 
-'copy' |
-'libx264' | 
-'libx265' | 
-'libaom-av1' |
-'librav1e' |
-'libsvtav1' |
-'av1_nvenc' |
-'av1_qsv' |
-'av1_amf' |
-'libvpx' |
-'libvpx-vp9'
+export type StreamType = 'video' | 'audio' | 'subtitle' | 'data'
 
-export type SupportedAudioEncoders = 
-'copy' |
-'aac' |
-'libvo_aacenc' |
-'libmp3lame' |
-'opus' |
-'wav?'
+export type Stream = {
+  type: StreamType
+  index: number,
+  per_stream_options: {
+    video?: FFMPEG_VideoOptions
+    audio?: FFMPEG_AudioOptions
+  }
+}
 
-export type SupportedAudioContainers = 'm4a' | 'mp3' | 'wav' | 'opus'
+export type HWAccels = 
+  null | 'none' | 'auto' | 'cuda' | 
+  'dxva2' | 'qsv' | 'd3d11va' | 'opencl' | 
+  'vulkan' | 'vdpau' | 'vaapi'
 
-export type SupportedVideoContainers = 'mp4' | 'mkv' | 'webm'
+export type VideoEncoders = 
+  'copy' |  'libx264' 
+  // | 'libx265' | 'libaom-av1' |
+  // 'librav1e' |  'libsvtav1' | 'av1_nvenc' |  'av1_qsv' |
+  // 'av1_amf' |  'libvpx' | 'libvpx-vp9'
 
-export type SupportedRateControlModes = 'crf' | 'abr'
+export type VideoDecoders = string // not really needed usually
+
+export type AudioDecoders = string // not really needed usually
+
+export type AudioEncoders = 
+  'copy' |
+  'aac' |
+  'libvo_aacenc' |
+  'libmp3lame' |
+  'opus' |
+  'pcm' // todo: which pcm variations do we support?
+
+export type AudioContainers = 'm4a' | 'mp3' | 'wav' | 'opus'
+
+export type VideoContainers = 'mp4' | 'mkv' | 'webm'
+
+export type RateControlModes = 'crf' | 'abr'
 
 // https://en.wikipedia.org/wiki/Comparison_of_video_container_formats#Video_coding_formats_support
 export type ContainerSupportedCodecs = {
@@ -700,4 +926,86 @@ export type ContainerSupportedCodecs = {
     audio: ['opus'],
     video: ['vp8', 'vp9', 'av1'],
   }
+}
+
+export type VideoEncoderOptions_libx264 = {
+  preset: {
+    default: 'medium',
+    value: Presets_libx264,
+    values: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
+  },
+  profile: {
+    default: 'high',
+    value: Profiles_libx264,
+    values: ['baseline', 'main', 'high','high10','high422','high444'],
+  },
+  tune: {
+    default: 'none',
+    value: 'none',
+    values: ['none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
+  },
+  level: {
+    default: 'auto',
+    value: 'auto',
+    values: ['auto', '1', '1.1', '1.2', '1.3', '2', '2.1', '2.2', '3', '3.1', '3.2', '4', '4.1', '4.2', '5', '5.1', '5.1'],
+  },
+  rate_control: {
+    default: 'crf',
+    mode: RateControlModes,
+    modes: ['crf', 'abr'],
+  },
+  crf: {
+    default: 23,
+    max: 51,
+    min: 0,
+    value: number,
+  },
+  abr: {
+    unit: BitrateUnit,
+    value: number,
+  },
+  max_bitrate: {
+    unit: BitrateUnit,
+    value: number,
+  },
+  buffer_size: {
+    unit: BitrateUnit,
+    value: number,
+  },
+  fastdecode: {
+    default: boolean,
+    value: boolean,
+  },
+  zerolatency: {
+    default: boolean,
+    value: boolean,
+  }
+}
+
+export type Presets_libx264 = 
+'ultrafast' | 'superfast' | 'veryfast' | 
+'faster' | 'fast' | 'medium' | 'slow' | 
+'slower' | 'veryslow' | 'placebo'
+
+export type Profiles_libx264 = 
+'baseline' | 'main' | 'high' |'high10' | 'high422' | 'high444'
+
+export type AudioEncoderOptions_aac = {
+  /*
+  
+  todo:
+
+  AAC encoder AVOptions:
+  -aac_coder         <int>        E...A...... Coding algorithm (from 0 to 2) (default twoloop)
+      anmr            0            E...A...... ANMR method
+      twoloop         1            E...A...... Two loop searching method
+      fast            2            E...A...... Default fast search
+  -aac_ms            <boolean>    E...A...... Force M/S stereo coding (default auto)
+  -aac_is            <boolean>    E...A...... Intensity stereo coding (default true)
+  -aac_pns           <boolean>    E...A...... Perceptual noise substitution (default true)
+  -aac_tns           <boolean>    E...A...... Temporal noise shaping (default true)
+  -aac_ltp           <boolean>    E...A...... Long term prediction (default false)
+  -aac_pred          <boolean>    E...A...... AAC-Main prediction (default false)
+  -aac_pce           <boolean>    E...A...... Forces the use of PCEs (default false)
+  */
 }
