@@ -1,8 +1,10 @@
 <script lang="ts">
   import AudioCodecOptions_aac from '$lib/components/AudioCodecOptions_aac.svelte'
-  import type { SupportedAudioEncoders } from '$lib/types'
+  import type { AudioEncoders } from '$lib/types'
 
-  let audio_codec: SupportedAudioEncoders = 'copy'
+  export let index: number
+
+  let audio_codec: AudioEncoders = 'copy'
 </script>
 
 <fieldset class="bordered"><legend>Audio</legend>
@@ -26,13 +28,14 @@
   </div>
   <AudioCodecOptions_aac />
 </fieldset>
+<div>per-stream audio options: audio stream [{index}]</div>
 
 
-<!-- <style lang="postcss">
+<style lang="postcss">
   fieldset {
     @apply pl-2 pb-2 pr-2;
   }
   legend {
-    @apply text-tertiary-500 text-lg
+    @apply text-tertiary-500 text-lg px-1
   }
-</style> -->
+</style>
