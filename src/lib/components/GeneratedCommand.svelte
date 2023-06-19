@@ -1,24 +1,43 @@
 <script lang="ts">
 	import Expandable from '$lib/components/Expandable.svelte'
-  import { 
-    ffmpeg_options,
-    inputs,
-    outputs,
-  } from '$lib/stores'
+  import { command } from '$lib/stores'
 
   export let show_info_and_usage: boolean = true
   
-  $: global_options = $ffmpeg_options.global
+  $: global_options_overwriting = 
+    $command.global_options.overwriting === 'never'
+    ? '-n'
+    : $command.global_options.overwriting === 'always'
+      ? '-y'
+      : '' // ask
+
+  $: global_options_array = [
+    global_options_overwriting,
+
+  ]
 </script>
 
 <h4 class="mt-4">Generated command:</h4>
-<pre
-  class="output-command"><span>ffmpeg </span><span
-  class="cmd-global-options">{        `${global_options} `     }</span>{#each $inputs as input}<span
-  class="cmd-input-file-options">{    `${input.options} ` }</span><span
-  class="cmd-input-file">{         `-i ${input.path} `         }</span>{/each}{#each $outputs as output}<span
-  class="cmd-output-file-options">{   `${output.options} `}</span><span
-  class="cmd-output-file">{              output.path           }</span>{/each}</pre>
+
+<pre class="output-command">
+<span>ffmpeg </span>
+{#each global_options_array as global_option}
+  <span class="cmd-global-options">
+    {global_option}
+  </span>
+{/each}
+
+{#each $command.inputs as input}
+  {#each input.streams as stream}<span>stream type: {stream.type} </span>{/each}
+  <span class="cmd-input-file-options">{`${input.per_file_main_options} `}</span>
+  <span class="cmd-input-file">{`-i ${input.url} `}</span>
+{/each}
+
+{#each $command.outputs as output}
+  <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span>
+  <span class="cmd-output-file">{output.url}</span>
+{/each}
+</pre>
 
 <button
   type="button"
