@@ -23,13 +23,14 @@
 
 <h4 class="mt-4">Generated command:</h4>
 
-<pre class="output-command">
+<pre class="generated-command">
 <span>ffmpeg </span>
 {#if $command.global_options.use_global_options}
   {#each global_options_array as global_option}
     <span class="cmd-global-options"> {global_option}</span>
   {/each}
 {/if}
+
 {#each $command.inputs as input}
   <span class="cmd-input-file-options">
     <span class="cmd_per_file_input_options">
