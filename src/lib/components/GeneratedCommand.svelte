@@ -4,6 +4,7 @@
 
   export let show_info_and_usage: boolean = true
   
+  // global options
   $: global_options_overwriting = 
     $command.global_options.overwriting === 'never'
     ? '-n'
@@ -11,9 +12,12 @@
       ? '-y'
       : '' // ask
 
+  // advanced global options
+  $: global_options_hide_banner = $command.global_options.advanced.hide_banner === true ? '-hide_banner' : ''
+
   $: global_options_array = [
     global_options_overwriting,
-
+    global_options_hide_banner
   ]
 </script>
 
