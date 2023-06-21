@@ -28,8 +28,19 @@
 {/each}
 
 {#each $command.inputs as input}
-  {#each input.streams as stream}<span>stream type: {stream.type} </span>{/each}
-  <span class="cmd-input-file-options">{`${input.per_file_main_options} `}</span>
+  <span class="cmd-input-file-options">
+    <span class="cmd_per_file_input_options">
+      {#if input.per_file_main_options.vn === true}
+        <span class="cmd_per_file_input_video_options">-vn </span>
+      {:else}
+        {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
+        <!-- TODO: the rest of the input options -->
+      {/if}
+    </span>
+    {#each input.streams as stream}
+      <span>per_stream_input_options for {stream.type} stream[{stream.index}] </span>
+    {/each}
+  </span>
   <span class="cmd-input-file">{`-i ${input.url} `}</span>
 {/each}
 
