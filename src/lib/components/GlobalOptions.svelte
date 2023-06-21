@@ -30,7 +30,7 @@
       -stats              print progress report during encoding
       -max_error_rate maximum error rate  ratio of decoding errors (0.0: no errors, 1.0: 100% errors) above which ffmpeg returns an error instead of success. -->
 
-      <div class="flex flex-row items-center">
+      <div class="flex flex-row items-center ml-1">
         <div class="mr-3">Overwrite output files? </div>
         <RadioGroup active="variant-filled-tertiary" hover="hover:variant-soft-primary">
           <RadioItem bind:group={$command.global_options.overwriting} name="overwriting" value={'ask'} >Ask</RadioItem>
@@ -38,6 +38,12 @@
           <RadioItem bind:group={$command.global_options.overwriting} name="overwriting" value={'always'} >Always</RadioItem>
         </RadioGroup>
       </div>
+      <label class="flex flex-row items-center ml-1">
+        <input type="checkbox" class="checkbox mr-2 " name="hide_banner" 
+          bind:checked={$command.global_options.advanced.hide_banner}
+        >
+        <div>Hide Banner</div>
+      </label>
 
     <!-- Advanced global options:
 
