@@ -10,6 +10,9 @@
   
   // export let data: PageData
 </script>
+<svelte:head>
+  <title>FFMPEG Command Generator</title>
+</svelte:head>
 
 <div class="container h-full px-2 mx-auto justify-center items-center">
   <h1 class="gradient-heading mt-4 mb-6">FFMPEG Command Generator</h1>
