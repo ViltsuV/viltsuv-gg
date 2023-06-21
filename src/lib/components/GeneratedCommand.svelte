@@ -49,6 +49,25 @@
 {/each}
 
 {#each $command.outputs as output}
+  {#if output.per_file_main_options.vn === true}
+    <span class="cmd_output_per_file_main_options">-vn </span>
+  {:else}
+  {#if output.per_file_main_options.ss}<span class="cmd_output_per_file_main_options">-ss {output.per_file_main_options.ss}</span>{/if}
+  {#if output.per_file_main_options.sseof}<span class="cmd_output_per_file_main_options">-sseof {output.per_file_main_options.sseof}</span>{/if}
+  {#if output.per_file_main_options.t}<span class="cmd_output_per_file_main_options">-t {output.per_file_main_options.t}</span>{/if}
+  {#if output.per_file_main_options.metadata.length > 0}<span class="cmd_output_per_file_main_options">-metadata {output.per_file_main_options.metadata}</span>{/if}
+  {#if output.per_file_main_options.timestamp}<span class="cmd_output_per_file_main_options">-timestamp {output.per_file_main_options.timestamp}</span>{/if}
+  {#if output.per_file_main_options.to}<span class="cmd_output_per_file_main_options">-to {output.per_file_main_options.to}</span>{/if}
+  {#if output.per_file_main_options.f}<span class="cmd_output_per_file_main_options">-f {output.per_file_main_options.f}</span>{/if}
+  {#if output.per_file_main_options.c.v.value}<span class="cmd_output_per_file_main_options">-c:v {output.per_file_main_options.c.v.value}</span>{/if}
+  {#if output.per_file_main_options.c.v.value === 'libx264'}
+    {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'crf'}<span class="cmd_output_per_file_main_options">-crf {output.per_file_main_options.c.v.encoder_options.libx264.crf.value}</span>{/if}
+    {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'abr'}<span class="cmd_output_per_file_main_options">-b:v {output.per_file_main_options.c.v.encoder_options.libx264.abr.value}{output.per_file_main_options.c.v.encoder_options.libx264.abr.unit}</span>{/if}
+  {/if}
+
+  {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value}</span>{/if}
+  
+  {/if}
   <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span>
   <span class="cmd-output-file">{output.url}</span>
 {/each}
@@ -132,7 +151,7 @@
     background-color: rgba(65, 242, 24, 0.2);
     color: rgb(65, 242, 24);
   }
-  .output_file_options, .cmd-output-file-options {
+  .output_file_options, .cmd-output-file-options, .cmd_output_per_file_main_options {
     background-color: rgba(65, 242, 24, 0.2);
     color: rgb(211, 255, 201);
   }
