@@ -25,12 +25,11 @@
 
 <pre class="output-command">
 <span>ffmpeg </span>
-{#each global_options_array as global_option}
-  <span class="cmd-global-options">
-    {global_option}
-  </span>
-{/each}
-
+{#if $command.global_options.use_global_options}
+  {#each global_options_array as global_option}
+    <span class="cmd-global-options"> {global_option}</span>
+  {/each}
+{/if}
 {#each $command.inputs as input}
   <span class="cmd-input-file-options">
     <span class="cmd_per_file_input_options">
