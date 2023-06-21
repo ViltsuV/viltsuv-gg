@@ -304,7 +304,7 @@ export type FFMPEG_OutputPerFileMainOptions =
      * set the language of the first audio stream
      * -metadata:s:a:0 language=eng
      */
-    metadata?: string[] | null
+    metadata: string[]
   }
 
 export type FFMPEG_InputPerFileMainOptions =
