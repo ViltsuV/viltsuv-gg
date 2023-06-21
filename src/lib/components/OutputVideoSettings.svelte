@@ -1,18 +1,11 @@
 <script lang="ts">
 	import VideoCodecOptions_x264 from '$lib/components/VideoCodecOptions_x264.svelte'
 	import Expandable from '$lib/components/Expandable.svelte'
+  import { command } from '$lib/stores'
 
-  import type { 
-    FFMPEG_OutputPerFileMainOptions,
-    VideoEncoders
-  } from '$lib/types'
+  export let output_index: number
+  export let stream_index: number
 
-  export let output_per_file_options: FFMPEG_OutputPerFileMainOptions
-  export let index: number
-
-  $: video_encoder_options = output_per_file_options.c.v.encoder_options
-
-  let selected_encoder: VideoEncoders = 'copy'
   let constrain_bitrate = false
   let vbv_tooltip = "Only recommended for situations where the conditions \ncall for constrained bitrate, such as: \n\n- streaming video over a low-bandwidth network, or \n- limited decoder capability."
 
@@ -25,7 +18,7 @@
 <fieldset class="bordered"><legend>Video</legend>
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Encoder</div>
-    <select bind:value={selected_encoder} class="select vcodec">
+    <select bind:value={$command.outputs[output_index].per_file_main_options.c.v.value} class="select vcodec">
       <option value="copy">copy (use source)</option>
       <optgroup label="H.264 AVC">
         <option value="libx264">x264 (libx264)</option>
@@ -60,8 +53,8 @@
     
   </div>
   
-  <Expandable expanded={selected_encoder === 'libx264'}>
-    <VideoCodecOptions_x264 libx264={video_encoder_options.libx264} />
+  <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.value === 'libx264'}>
+    <VideoCodecOptions_x264 {output_index} {stream_index} />
   </Expandable>
   <fieldset class:bordered={constrain_bitrate} class="mt-3"> <!-- Constrain Bitrate -->
     <legend>
@@ -112,7 +105,7 @@
   </fieldset>
 </fieldset>
 
-<div>per-stream video options: video [{index}]</div>
+<div>per-stream video options: video stream [{stream_index}]</div>
 
 <style lang="postcss">
   .checkbox:checked {

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { 
-    FFMPEG_Output, 
+	import type {
     AudioContainers, 
     VideoContainers 
   } from "$lib/types"
@@ -8,28 +7,28 @@
 	import OutputAudioSettings from "$lib/components/OutputAudioSettings.svelte"
 	import Expandable from "$lib/components/Expandable.svelte"
 	import OutputVideoSettings from "$lib/components/OutputVideoSettings.svelte"
-
-  export let index: number
-	export let output: FFMPEG_Output
+  import { command } from "$lib/stores"
 	import { RadioGroup, RadioItem } from "@skeletonlabs/skeleton"
+  
+  export let output_index: number
 
   let output_video_container: VideoContainers = 'mp4'
   let output_audio_container: AudioContainers = 'm4a'
-  $: video_enabled = !output.per_file_main_options.vn
-  $: audio_enabled = !output.per_file_main_options.an
+  $: video_enabled = !$command.outputs[output_index].per_file_main_options.vn
+  $: audio_enabled = !$command.outputs[output_index].per_file_main_options.an
 
   // $: output_container = video_enabled ? output_video_container : output_audio_container
 </script>
 
-<fieldset class="bordered"><legend>Output [{index}]</legend>
+<fieldset class="bordered"><legend>Output [{output_index}]</legend>
   <fieldset class="bordered"><legend>Per-File Output Options</legend>
 
     <label class="flex items-center space-x-2">
-      <input class="checkbox" type="checkbox" bind:checked={output.per_file_main_options.vn} />
+      <input class="checkbox" type="checkbox" bind:checked={$command.outputs[output_index].per_file_main_options.vn} />
       <div>Disable Video</div>
     </label>
     <label class="flex items-center space-x-2">
-      <input class="checkbox" type="checkbox" bind:checked={output.per_file_main_options.an} />
+      <input class="checkbox" type="checkbox" bind:checked={$command.outputs[output_index].per_file_main_options.an} />
       <div>Disable Audio</div>
     </label>
   
@@ -53,10 +52,13 @@
         {/if}
       </div>
       
-      {#each output.streams as stream, i}
+      {#each $command.outputs[output_index].streams as stream, i}
         {#if stream.type === 'video'}
           <Expandable expanded={video_enabled}>
-            <OutputVideoSettings output_per_file_options={output.per_file_main_options} index={i} />
+            <OutputVideoSettings 
+              output_index={output_index}
+              stream_index={i}
+            />
           </Expandable>
         {/if}
         {#if stream.type === 'audio'}
@@ -70,7 +72,7 @@
 
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Output</div>
-    <input type="text" bind:value={output.url} placeholder="output (e.g. C:\videos\output.mp4)" />
+    <input type="text" bind:value={$command.outputs[output_index].url} placeholder="output (e.g. C:\videos\output.mp4)" />
   </div>
 </fieldset>
 

@@ -24,7 +24,7 @@
   {/each}
 
   {#each $command.outputs as output, i}
-    <OutputSection {output} index={i} />
+    <OutputSection output_index={i} />
   {/each}
 
   <GeneratedCommand show_info_and_usage={false} />

@@ -2,15 +2,17 @@
 	import { RadioGroup, RadioItem, RangeSlider } from "@skeletonlabs/skeleton"
 	import Expandable from '$lib/components/Expandable.svelte'
 	import PresetExplainer_x264 from '$lib/components/PresetExplainer_x264.svelte'
-  import type { RateControlModes, VideoEncoderOptions_libx264, VideoEncoders } from '$lib/types'
-  
+  import type { RateControlModes } from '$lib/types'
+  import { command } from "$lib/stores"
+
   export let rate_control_mode: RateControlModes = 'crf'
 
   const VP_CRF_MAX = 63
   const VP_RECOMMENDED_MIN = 15
   const VP_RECOMMENDED_MAX = 35
 
-  export let libx264: VideoEncoderOptions_libx264
+  export let output_index: number
+  export let stream_index: number
 
   let showing_crf_explainer = false
   let showing_preset_explainer = false
@@ -18,7 +20,8 @@
   let showing_tune_explainer = false
   let showing_abr_explainer = false
 
-  let crf_slider = libx264.crf.default
+  $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.preset.value
+  // let crf_slider = $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.default
 
 </script>
 
@@ -27,7 +30,7 @@
   <div class="flex flex-row mt-2">
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Preset</div>
-      <select class="select" bind:value={libx264.preset.value}>
+      <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.preset.value}>
         <option value="ultrafast">ultrafast</option>
         <option value="superfast">superfast</option>
         <option value="veryfast">veryfast</option>
@@ -60,7 +63,7 @@
   <div class="flex flex-row mt-2">
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Profile</div>
-      <select class="select" bind:value={libx264.profile.value}>
+      <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.profile.value}>
         <option value="baseline">baseline</option>
         <option value="main">main</option>
         <option value="high">high (default)</option>
@@ -86,7 +89,7 @@
   <div class="flex flex-row mt-2">
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Tune</div>
-      <select class="select" bind:value={libx264.tune.value}>
+      <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.tune.value}>
         <option value="none">none (default)</option>
         <option value="film">film</option>
         <option value="animation">animation</option>
@@ -133,19 +136,19 @@
     </RadioItem>
   </RadioGroup>
 
-  <Expandable expanded={rate_control_mode === 'crf'}>
+  <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'crf'}>
     <div class="flex items-center">
       <RangeSlider
         name="range-slider"
         class="flex-grow"
-        bind:value={crf_slider}
-        min={libx264.crf.min}
-        max={libx264.crf.max}
+        bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.value}
+        min={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.min}
+        max={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.max}
         step={1}
         ticked
       >
         <div class="flex justify-center">
-          <div class="text-sm pl-3">{crf_slider} / {libx264.crf.max}</div>
+          <div class="text-sm pl-3">{$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.default} / {$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.max}</div>
         </div>
       </RangeSlider>
       <button class="btn btn-icon variant-filled-surface ml-2"
@@ -162,7 +165,7 @@
     </Expandable>
 
   </Expandable>
-  <Expandable expanded={rate_control_mode === 'abr'}>
+  <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'abr'}>
     <div class="flex flex-row">
       <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
         <div class="input-group-shim">Bitrate</div>
