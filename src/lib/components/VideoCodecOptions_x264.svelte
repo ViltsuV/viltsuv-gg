@@ -147,8 +147,10 @@
         step={1}
         ticked
       >
-        <div class="flex justify-center">
-          <div class="text-sm pl-3">{$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.default} / {$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.max}</div>
+        <div class="flex justify-between">
+          <div class="pl-2">CRF value (video quality)</div>
+          <div class="text-sm pl-3">{$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.value} / {$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.max}</div>
+          <div></div>
         </div>
       </RangeSlider>
       <button class="btn btn-icon variant-filled-surface ml-2"
@@ -159,8 +161,42 @@
     
     <Expandable expanded={showing_crf_explainer} overflow='auto'>
       <div class="pt-2">
-        TODO: CRF explainer
-        <!-- <CRF_Explainer_x264 /> -->
+        <div class="text-sm flex flex-row justify-center">
+          <div class="flex flex-col mr-8">
+            <div>CRF value:</div>
+            <div>video quality:</div>
+            <div>file size:</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div>0</div>
+            <div>lossless</div>
+            <div>massive</div>
+          </div>
+          <div>{'<'}</div>
+          <div class="flex flex-col items-center" title="decreasing CRF past 18 will yield barely noticeable quality gains at the cost of disproportionate file size increase">
+            <div>18</div>
+            <div>very good</div>
+            <div>large</div>
+          </div>
+          <div>{'<'}</div>
+          <div class="flex flex-col items-center">
+            <div>23</div>
+            <div>default</div>
+            <div>optimal</div>
+          </div>
+          <div class="items-stretch">{'>'}</div>
+          <div class="flex flex-col items-center" title="increasing CRF past 28 will yield minimal file size gains at the cost of disproportionate loss of quality">
+            <div>28</div>
+            <div>worse</div>
+            <div>small</div>
+          </div>
+          <div>{'>'}</div>
+          <div class="flex flex-col items-center">
+            <div>51</div>
+            <div>worst</div>
+            <div>tiny</div>
+          </div>
+        </div>
       </div>
     </Expandable>
 
