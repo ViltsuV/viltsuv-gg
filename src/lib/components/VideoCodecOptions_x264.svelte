@@ -2,10 +2,7 @@
 	import { RadioGroup, RadioItem, RangeSlider } from "@skeletonlabs/skeleton"
 	import Expandable from '$lib/components/Expandable.svelte'
 	import PresetExplainer_x264 from '$lib/components/PresetExplainer_x264.svelte'
-  import type { RateControlModes } from '$lib/types'
   import { command } from "$lib/stores"
-
-  export let rate_control_mode: RateControlModes = 'crf'
 
   const VP_CRF_MAX = 63
   const VP_RECOMMENDED_MIN = 15
@@ -119,7 +116,7 @@
     class="mb-3"
   >
     <RadioItem 
-      bind:group={rate_control_mode} 
+      bind:group={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.rate_control.mode} 
       name="rate-control" 
       value={'abr'}
       title="average bitrate"
@@ -127,7 +124,7 @@
       ABR
     </RadioItem>
     <RadioItem 
-      bind:group={rate_control_mode} 
+      bind:group={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.rate_control.mode} 
       name="rate-control" 
       value={'crf'}
       title="constant rate factor"
