@@ -941,8 +941,8 @@ export type VideoEncoderOptions_libx264 = {
   },
   tune: {
     default: 'none',
-    value: 'none',
-    values: ['none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
+    value: Tune_libx264,
+    values: Tunes_libx264,
   },
   level: {
     default: 'auto',
@@ -998,6 +998,15 @@ export type Profile_libx264 =
 
 export type Profiles_libx264 = [
   'default', 'baseline', 'main', 'high', 'high10', 'high422', 'high444'
+]
+
+export type Tune_libx264 = 
+'default' | 'none' | 'film' | 'animation' | 
+'grain' | 'stillimage' | 'psnr' | 'ssim'
+
+export type Tunes_libx264 = [
+  'default', 'none', 'film', 'animation', 
+  'grain', 'stillimage', 'psnr', 'ssim'
 ]
 
 export type AudioEncoderOptions_aac = {

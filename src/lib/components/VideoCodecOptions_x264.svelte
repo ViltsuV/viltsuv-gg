@@ -87,7 +87,8 @@
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Tune</div>
       <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.tune.value}>
-        <option value="none">none (default)</option>
+        <option value="default">default (none)</option>
+        <option value="none">none</option>
         <option value="film">film</option>
         <option value="animation">animation</option>
         <option value="grain">grain</option>

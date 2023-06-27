@@ -161,8 +161,8 @@ function generate_video_encoder_options(): FFMPEG_VideoEncoderOptions {
       },
       tune: {
         default: 'none',
-        value: 'none',
-        values: ['none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
+        value: 'default',
+        values: ['default', 'none', 'film', 'animation', 'grain', 'stillimage', 'psnr', 'ssim'],
       },
       level: {
         default: 'auto',
