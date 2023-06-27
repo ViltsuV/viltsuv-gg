@@ -946,8 +946,8 @@ export type VideoEncoderOptions_libx264 = {
   },
   level: {
     default: 'auto',
-    value: 'auto',
-    values: ['auto', '1', '1.1', '1.2', '1.3', '2', '2.1', '2.2', '3', '3.1', '3.2', '4', '4.1', '4.2', '5', '5.1', '5.1'],
+    value: Level_libx264,
+    values: Levels_libx264,
   },
   rate_control: {
     default: 'crf',
@@ -1007,6 +1007,23 @@ export type Tune_libx264 =
 export type Tunes_libx264 = [
   'default', 'none', 'film', 'animation', 
   'grain', 'stillimage', 'psnr', 'ssim'
+]
+
+export type Level_libx264 = 
+  'auto' |
+  '1' | '1.1' | '1.2' | '1.3' |
+  '2' | '2.1' | '2.2' |
+  '3' | '3.1' | '3.2' | 
+  '4' | '4.1' | '4.2' | 
+  '5' | '5.1' | '5.1'
+
+export type Levels_libx264 = [
+  'auto', 
+  '1', '1.1', '1.2', '1.3', 
+  '2', '2.1', '2.2', 
+  '3', '3.1', '3.2', 
+  '4', '4.1', '4.2', 
+  '5', '5.1', '5.1'
 ]
 
 export type AudioEncoderOptions_aac = {

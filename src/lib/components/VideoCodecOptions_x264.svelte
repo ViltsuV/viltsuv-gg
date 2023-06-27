@@ -15,6 +15,7 @@
   let showing_preset_explainer = false
   let showing_profile_explainer = false
   let showing_tune_explainer = false
+  let showing_level_explainer = false
   let showing_abr_explainer = false
 
   $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.preset.value
@@ -107,6 +108,29 @@
     <div class="pt-2">
       TODO: Tune explainer
       <!-- <TuneExplainer_x264 /> -->
+    </div>
+  </Expandable>
+  
+  <!-- LEVEL -->
+  <div class="flex flex-row mt-2">
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+      <div class="input-group-shim">Level</div>
+      <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.level.value}>
+        {#each $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.level.values as level}
+          <option value={level}>{level}</option>
+        {/each}
+      </select>
+    </div>
+
+    <button class="btn btn-icon variant-filled-surface ml-2"
+      title="{showing_level_explainer ? "close" : "open"} level explainer"
+      on:click={() => showing_level_explainer = !showing_level_explainer}
+    >?</button>
+  </div>
+  <Expandable expanded={showing_level_explainer} overflow='auto'>
+    <div class="pt-2">
+      TODO: Level explainer
+      <!-- <LevelExplainer_x264 /> -->
     </div>
   </Expandable>
 
