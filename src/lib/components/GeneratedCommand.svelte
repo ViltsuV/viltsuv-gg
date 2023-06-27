@@ -61,14 +61,22 @@
     {#if output.per_file_main_options.f}<span class="cmd_output_per_file_main_options">-f {output.per_file_main_options.f}</span>{/if}
     {#if output.per_file_main_options.c.v.value}<span class="cmd_output_per_file_main_options">-c:v {output.per_file_main_options.c.v.value}</span>{/if}
     {#if output.per_file_main_options.c.v.value === 'libx264'}
-      {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'crf'}<span class="cmd_output_per_file_main_options">-crf {output.per_file_main_options.c.v.encoder_options.libx264.crf.value}</span>{/if}
-      {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'abr'}<span class="cmd_output_per_file_main_options">-b:v {output.per_file_main_options.c.v.encoder_options.libx264.abr.value}{output.per_file_main_options.c.v.encoder_options.libx264.abr.unit}</span>{/if}
+      {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'crf'}
+        <span class="cmd_output_per_file_main_options">-crf {output.per_file_main_options.c.v.encoder_options.libx264.crf.value} </span>
+      {/if}
+      {#if output.per_file_main_options.c.v.encoder_options.libx264.rate_control.mode === 'abr'}
+        <span class="cmd_output_per_file_main_options">-b:v {
+          output.per_file_main_options.c.v.encoder_options.libx264.abr.value}{
+          output.per_file_main_options.c.v.encoder_options.libx264.abr.unit} </span>
+      {/if}
     {/if}
-
-    {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value}</span>{/if}
-  
+    {#if output.per_file_main_options.an === true}
+      <span class="cmd_output_per_file_main_options">-an </span>
+    {:else}
+      {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value} </span>{/if}
+    {/if}
   {/if}
-  <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span>
+  <!-- <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span> -->
   <span class="cmd-output-file">{output.url}</span>
 {/each}
 </pre>
