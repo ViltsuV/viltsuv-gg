@@ -156,8 +156,8 @@ function generate_video_encoder_options(): FFMPEG_VideoEncoderOptions {
       },
       profile: {
         default: 'high',
-        value: 'high',
-        values: ['baseline', 'main', 'high','high10','high422','high444'],
+        value: 'default',
+        values: ['default', 'baseline', 'main', 'high','high10','high422','high444'],
       },
       tune: {
         default: 'none',

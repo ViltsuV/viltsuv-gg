@@ -936,8 +936,8 @@ export type VideoEncoderOptions_libx264 = {
   },
   profile: {
     default: 'high',
-    value: Profiles_libx264,
-    values: ['baseline', 'main', 'high','high10','high422','high444'],
+    value: Profile_libx264,
+    values: Profiles_libx264,
   },
   tune: {
     default: 'none',
@@ -993,8 +993,12 @@ export type Presets_libx264 = [
   'slow', 'slower', 'veryslow', 'placebo'
 ]
 
-export type Profiles_libx264 = 
-'baseline' | 'main' | 'high' |'high10' | 'high422' | 'high444'
+export type Profile_libx264 = 
+  'default' | 'baseline' | 'main' | 'high' | 'high10' | 'high422' | 'high444'
+
+export type Profiles_libx264 = [
+  'default', 'baseline', 'main', 'high', 'high10', 'high422', 'high444'
+]
 
 export type AudioEncoderOptions_aac = {
   /*

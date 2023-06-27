@@ -60,9 +60,10 @@
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Profile</div>
       <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.profile.value}>
+        <option value="default">default (high)</option>
         <option value="baseline">baseline</option>
         <option value="main">main</option>
-        <option value="high">high (default)</option>
+        <option value="high">high</option>
         <option value="high10">high10</option>
         <option value="high422">high422</option>
         <option value="high444">high444</option>

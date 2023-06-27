@@ -72,6 +72,9 @@
       {#if output.per_file_main_options.c.v.encoder_options.libx264.preset.value !== 'default'}
         <span class="cmd_output_per_file_main_options">-preset {output.per_file_main_options.c.v.encoder_options.libx264.preset.value} </span>
       {/if}
+      {#if output.per_file_main_options.c.v.encoder_options.libx264.profile.value !== 'default'}
+        <span class="cmd_output_per_file_main_options">-profile:v {output.per_file_main_options.c.v.encoder_options.libx264.profile.value} </span>
+      {/if}
     {/if}
     {#if output.per_file_main_options.an === true}
       <span class="cmd_output_per_file_main_options">-an </span>
