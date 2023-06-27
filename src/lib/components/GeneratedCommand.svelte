@@ -129,6 +129,17 @@
   </div>
 </Expandable>
 <style lang="postcss">
+  pre {
+    /* prod */
+    /* works great in chrome, not so great in firefox */
+    /* display: inline-table; */
+
+    /* during dev */
+    display: grid;
+  }
+  span {
+    white-space: wrap;
+  }
   fieldset {
     @apply pl-2 pb-2 pr-2;
   }
