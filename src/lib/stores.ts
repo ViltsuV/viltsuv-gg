@@ -151,8 +151,8 @@ function generate_video_encoder_options(): FFMPEG_VideoEncoderOptions {
     libx264: {
       preset: {
         default: 'medium',
-        value: 'medium',
-        values: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
+        value: 'default',
+        values: ['default', 'ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
       },
       profile: {
         default: 'high',

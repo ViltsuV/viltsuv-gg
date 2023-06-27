@@ -28,20 +28,19 @@
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
       <div class="input-group-shim">Preset</div>
       <select class="select" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.preset.value}>
+        <option value="default">default (medium)</option>
         <option value="ultrafast">ultrafast</option>
         <option value="superfast">superfast</option>
         <option value="veryfast">veryfast</option>
         <option value="faster">faster</option>
         <option value="fast">fast</option>
-        <option value="medium">medium (default)</option>
+        <option value="medium">medium</option>
         <option value="slow">slow</option>
         <option value="slower">slower</option>
         <option value="veryslow">veryslow</option>
         <option value="placebo" 
           title="increases encoding time significantly and increases visual quality by a miniscule amount compared to veryslow"
-        >
-          placebo (don't use this)
-        </option>
+        >placebo (don't use this)</option>
       </select>
     </div>
 

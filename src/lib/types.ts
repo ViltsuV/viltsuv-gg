@@ -931,8 +931,8 @@ export type ContainerSupportedCodecs = {
 export type VideoEncoderOptions_libx264 = {
   preset: {
     default: 'medium',
-    value: Presets_libx264,
-    values: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow', 'placebo'],
+    value: Preset_libx264,
+    values: Presets_libx264,
   },
   profile: {
     default: 'high',
@@ -982,10 +982,16 @@ export type VideoEncoderOptions_libx264 = {
   }
 }
 
-export type Presets_libx264 = 
+export type Preset_libx264 = 'default' |
 'ultrafast' | 'superfast' | 'veryfast' | 
 'faster' | 'fast' | 'medium' | 'slow' | 
 'slower' | 'veryslow' | 'placebo'
+
+export type Presets_libx264 = [
+  'default', 'ultrafast', 'superfast',
+  'veryfast', 'faster', 'fast', 'medium',
+  'slow', 'slower', 'veryslow', 'placebo'
+]
 
 export type Profiles_libx264 = 
 'baseline' | 'main' | 'high' |'high10' | 'high422' | 'high444'
