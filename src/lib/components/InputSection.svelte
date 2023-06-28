@@ -11,8 +11,9 @@
     <PerFileInputOptions />
     
   </fieldset>
-  <div>input video streams & per-stream options</div>
-  <div>input audio streams & per-stream options</div>
+  <!-- TODO -->
+  <!-- <div>input video streams & per-stream options</div>
+  <div>input audio streams & per-stream options</div> -->
 
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Input</div>
