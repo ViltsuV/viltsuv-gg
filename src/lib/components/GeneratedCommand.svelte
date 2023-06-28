@@ -97,7 +97,7 @@
     {/if}
   {/if}
   <!-- <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span> -->
-  <span class="cmd-output-file">{output.url}</span>
+  <span class="cmd-output-file">{output.url}.{output.per_file_main_options.container.selected_container}</span>
 {/each}
 </pre>
 

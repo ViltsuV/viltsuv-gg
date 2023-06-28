@@ -268,6 +268,11 @@ export type FFMPEG_CommonPerFileMainOptions = {
 
 export type FFMPEG_OutputPerFileMainOptions = 
   FFMPEG_CommonPerFileMainOptions & {
+    container: {
+      selected_container: Container
+      selected_audio_container: AudioContainer
+      selected_video_container: VideoContainer
+    }
     /**
      * @description Select an encoder (when used before an output file) 
      * for one or more streams. 
@@ -900,9 +905,13 @@ export type AudioEncoders =
   'opus' |
   'pcm' // todo: which pcm variations do we support?
 
-export type AudioContainers = 'm4a' | 'mp3' | 'wav' | 'opus'
+export type AudioContainer = 'm4a' | 'mp3' | 'wav' | 'opus'
+export type AudioContainers = ['m4a', 'mp3', 'wav', 'opus']
 
-export type VideoContainers = 'mp4' | 'mkv' | 'webm'
+export type VideoContainer = 'mp4' | 'mkv' | 'webm'
+export type VideoContainers = ['mp4', 'mkv', 'webm']
+
+export type Container = VideoContainer | AudioContainer
 
 export type RateControlModes = 'crf' | 'abr'
 

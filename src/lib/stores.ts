@@ -112,6 +112,11 @@ function generate_av_output(): FFMPEG_Output {
   return {
     url: 'output_path',
     per_file_main_options: {
+      container: {
+        selected_audio_container: 'm4a',
+        selected_container: 'mp4',
+        selected_video_container: 'mp4',
+      },
       c: { // defines encoders for all streams that don't have a stream-specific encoder defined
         v: {
           value: 'copy',

@@ -1,9 +1,4 @@
 <script lang="ts">
-	import type {
-    AudioContainers, 
-    VideoContainers 
-  } from "$lib/types"
-
 	import OutputAudioSettings from "$lib/components/OutputAudioSettings.svelte"
 	import Expandable from "$lib/components/Expandable.svelte"
 	import OutputVideoSettings from "$lib/components/OutputVideoSettings.svelte"
@@ -12,12 +7,23 @@
   
   export let output_index: number
 
-  let output_video_container: VideoContainers = 'mp4'
-  let output_audio_container: AudioContainers = 'm4a'
   $: video_enabled = !$command.outputs[output_index].per_file_main_options.vn
   $: audio_enabled = !$command.outputs[output_index].per_file_main_options.an
 
-  // $: output_container = video_enabled ? output_video_container : output_audio_container
+  $: if (!video_enabled && audio_enabled) {
+    command.update(($command) => {
+      $command.outputs[output_index].per_file_main_options.container.selected_container =
+        $command.outputs[output_index].per_file_main_options.container.selected_audio_container
+      return $command
+    })
+  }
+  $: if (video_enabled) {
+    command.update(($command) => {
+      $command.outputs[output_index].per_file_main_options.container.selected_container =
+        $command.outputs[output_index].per_file_main_options.container.selected_video_container
+      return $command
+    })
+  }
 </script>
 
 <fieldset class="bordered"><legend>Output [{output_index}]</legend>
@@ -37,17 +43,17 @@
         <div class="pr-3 ml-1 text-tertiary-500 text-lg">Container</div>
         {#if video_enabled}
           <RadioGroup active="variant-filled-tertiary" hover="hover:variant-soft-primary">
-            <RadioItem bind:group={output_video_container} name="container" value={'mkv'}>mkv</RadioItem>
-            <RadioItem bind:group={output_video_container} name="container" value={'mp4'}>mp4</RadioItem>
-            <RadioItem bind:group={output_video_container} name="container" value={'webm'}>webm</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_video_container} name="container" value={'mkv'}>mkv</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_video_container} name="container" value={'mp4'}>mp4</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_video_container} name="container" value={'webm'}>webm</RadioItem>
           </RadioGroup>
         {/if}
         {#if !video_enabled && audio_enabled}
           <RadioGroup active="variant-filled-tertiary" hover="hover:variant-soft-primary">
-            <RadioItem bind:group={output_audio_container} name="container" value={'m4a'}>m4a</RadioItem>
-            <RadioItem bind:group={output_audio_container} name="container" value={'mp3'}>mp3</RadioItem>
-            <RadioItem bind:group={output_audio_container} name="container" value={'opus'}>opus</RadioItem>
-            <RadioItem bind:group={output_audio_container} name="container" value={'wav'}>wav</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_audio_container} name="container" value={'m4a'}>m4a</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_audio_container} name="container" value={'mp3'}>mp3</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_audio_container} name="container" value={'opus'}>opus</RadioItem>
+            <RadioItem bind:group={$command.outputs[output_index].per_file_main_options.container.selected_audio_container} name="container" value={'wav'}>wav</RadioItem>
           </RadioGroup>
         {/if}
       </div>
