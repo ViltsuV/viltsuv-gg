@@ -964,6 +964,7 @@ export type VideoEncoderOptions_libx264 = {
     unit: BitrateUnit,
     value: number,
   },
+  constrain_bitrate: boolean,
   max_bitrate: {
     unit: BitrateUnit,
     value: number,

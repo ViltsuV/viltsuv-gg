@@ -6,13 +6,8 @@
   export let output_index: number
   export let stream_index: number
 
-  let constrain_bitrate = false
   let vbv_tooltip = "Only recommended for situations where the conditions \ncall for constrained bitrate, such as: \n\n- streaming video over a low-bandwidth network, or \n- limited decoder capability."
-
-  let bufsize_unit: 'mbps' | 'kbps' = 'mbps'
   let bufsize_tooltip = 'Usually services recommend a buffer size of 1-2s i.e. 1-2x your bitrate'
-  
-  let maxrate_unit: 'mbps' | 'kbps' = 'mbps'
 </script>
 
 <fieldset class="bordered"><legend>Video</legend>
@@ -56,14 +51,18 @@
   <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.value === 'libx264'}>
     <VideoCodecOptions_x264 {output_index} {stream_index} />
   </Expandable>
-  <fieldset class:bordered={constrain_bitrate} class="mt-3"> <!-- Constrain Bitrate -->
+  <!-- Constrain Bitrate (libx264) -->
+  <fieldset 
+    class:bordered={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate} 
+    class="mt-3"
+  >
     <legend>
       <div class="flex flex-row items-center justify-center">
         <input class="checkbox" 
           title={vbv_tooltip}
           type="checkbox" 
           name="constrain_bitrate" 
-          bind:checked={constrain_bitrate}>
+          bind:checked={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate}>
         <div class="flex flex-row pl-2">
           <div
             title={vbv_tooltip}
@@ -77,14 +76,18 @@
         </div>
       </div>
     </legend>
-    <Expandable expanded={constrain_bitrate}>
+    <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate}>
       <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
         <div class="input-group-shim" title="sets -maxrate parameter">Max Bitrate</div>
         <div class="flex flex-row">
-          <input class="input" type="number" name="maxrate" disabled={!constrain_bitrate}>
-          <select class="select" bind:value={maxrate_unit} name="maxrate_unit" disabled={!constrain_bitrate}>
-            <option value="kbps" title="unit">kbps</option>
-            <option value="mbps" title="unit">mbps</option>
+          <input type="number" class="input" name="maxrate_value"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.max_bitrate.value}
+          >
+          <select class="select" name="maxrate_unit"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.max_bitrate.unit}
+          >
+            <option value="K" title="unit">Kbps (K)</option>
+            <option value="M" title="unit">Mbps (M)</option>
           </select>
         </div>
       </div>
@@ -94,10 +97,12 @@
           Buffer Size
         </div>
         <div class="flex flex-row" title={bufsize_tooltip}>
-          <input class="input" type="number" name="bufsize" disabled={!constrain_bitrate}>
-          <select class="select" name="bufsize_unit" bind:value={bufsize_unit} disabled={!constrain_bitrate}>
-            <option value="kbps">kbps</option>
-            <option value="mbps">mbps</option>
+          <input class="input" type="number" name="bufsize"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.value}
+          >
+          <select class="select" name="bufsize_unit" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit}>
+            <option value="K">Kbps (K)</option>
+            <option value="M">Mbps (M)</option>
           </select>
         </div>
       </div>

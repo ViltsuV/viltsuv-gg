@@ -184,6 +184,7 @@ function generate_video_encoder_options(): FFMPEG_VideoEncoderOptions {
         unit: 'K',
         value: 4000,
       },
+      constrain_bitrate: false,
       max_bitrate: {
         unit: 'K',
         value: 4000,

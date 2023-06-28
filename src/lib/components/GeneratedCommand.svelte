@@ -81,6 +81,14 @@
       {#if output.per_file_main_options.c.v.encoder_options.libx264.level.value !== 'auto'}
         <span class="cmd_output_per_file_main_options">-level {output.per_file_main_options.c.v.encoder_options.libx264.level.value} </span>
       {/if}
+      {#if output.per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate && output.per_file_main_options.c.v.encoder_options.libx264.max_bitrate.value > 0}
+        <span class="cmd_output_per_file_main_options">-maxrate {
+          output.per_file_main_options.c.v.encoder_options.libx264.max_bitrate.value}{
+          output.per_file_main_options.c.v.encoder_options.libx264.max_bitrate.unit} </span>
+        <span class="cmd_output_per_file_main_options">-bufsize {
+          output.per_file_main_options.c.v.encoder_options.libx264.buffer_size.value}{
+          output.per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit} </span>
+      {/if}
     {/if}
     {#if output.per_file_main_options.an === true}
       <span class="cmd_output_per_file_main_options">-an </span>
