@@ -51,7 +51,8 @@
   </Expandable>
 </fieldset>
 
-<div>per-stream video options: video stream [{stream_index}]</div>
+<!-- TODO -->
+<!-- <div>per-stream video options: video stream [{stream_index}]</div> -->
 
 <style lang="postcss">
   .checkbox:checked {

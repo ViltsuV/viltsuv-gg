@@ -28,7 +28,8 @@
   </div>
   <AudioCodecOptions_aac />
 </fieldset>
-<div>per-stream audio options: audio stream [{index}]</div>
+<!-- TODO -->
+<!-- <div>per-stream audio options: audio stream [{stream_index}]</div> -->
 
 
 <style lang="postcss">
