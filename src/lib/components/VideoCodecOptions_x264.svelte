@@ -17,6 +17,9 @@
   let showing_tune_explainer = false
   let showing_level_explainer = false
   let showing_abr_explainer = false
+  
+  let vbv_tooltip = "Only recommended for situations where the conditions \ncall for constrained bitrate, such as: \n\n- streaming video over a low-bandwidth network, or \n- limited decoder capability."
+  let bufsize_tooltip = 'Usually services recommend a buffer size of 1-2s i.e. 1-2x your bitrate'
 
   $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.preset.value
   // let crf_slider = $command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.crf.default
@@ -246,17 +249,78 @@
       </div>
     </Expandable>
   </Expandable>
-
+  <!-- Constrain Bitrate -->
+  <fieldset 
+    class:bordered={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate} 
+    class="mt-3"
+  >
+    <legend>
+      <div class="flex flex-row items-center justify-center">
+        <input class="checkbox" 
+          title={vbv_tooltip}
+          type="checkbox" 
+          name="constrain_bitrate" 
+          bind:checked={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate}>
+        <div class="flex flex-row pl-2">
+          <div
+            title={vbv_tooltip}
+          >Constrain Video Bitrate</div>
+          <a href="https://youtu.be/Mn8v1ojV80M?t=20"
+            title="The Hypothetical Reference Decoder (HRD) - Christian Feldmann - YouTube"
+            class="pl-2"
+          >
+            (VBV / HRD)
+          </a>
+        </div>
+      </div>
+    </legend>
+    <Expandable expanded={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.constrain_bitrate}>
+      <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
+        <div class="input-group-shim" title="sets -maxrate parameter">Max Bitrate</div>
+        <div class="flex flex-row">
+          <input type="number" class="input" name="maxrate_value"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.max_bitrate.value}
+          >
+          <select class="select" name="maxrate_unit"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.max_bitrate.unit}
+          >
+            <option value="K" title="unit">Kbps (K)</option>
+            <option value="M" title="unit">Mbps (M)</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
+        <div class="input-group-shim" title="sets -bufsize parameter{'\n\n' + bufsize_tooltip}">
+          Buffer Size
+        </div>
+        <div class="flex flex-row" title={bufsize_tooltip}>
+          <input class="input" type="number" name="bufsize"
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.value}
+          >
+          <select class="select" name="bufsize_unit" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit}>
+            <option value="K">Kbps (K)</option>
+            <option value="M">Mbps (M)</option>
+          </select>
+        </div>
+      </div>
+    </Expandable>
+  </fieldset>
 </fieldset>
 
 <style lang="postcss">
+  .checkbox:checked {
+    @apply bg-tertiary-500;
+  }
   fieldset {
     @apply pl-2 pb-2 pr-2;
+    border-width: 1px;
+    border-color: transparent;
   }
   legend {
-    @apply text-tertiary-500 text-lg px-1
+    @apply text-tertiary-500 text-lg px-1;
   }
   .bordered {
-    @apply border border-tertiary-500
+    @apply border border-tertiary-500;
   }
 </style>
