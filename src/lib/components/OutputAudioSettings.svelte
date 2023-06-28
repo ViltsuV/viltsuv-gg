@@ -1,16 +1,17 @@
 <script lang="ts">
   import AudioCodecOptions_aac from '$lib/components/AudioCodecOptions_aac.svelte'
-  import type { AudioEncoders } from '$lib/types'
+	import { command } from '$lib/stores'
 
-  export let index: number
-
-  let audio_codec: AudioEncoders = 'copy'
+  export let output_index: number
+  export let stream_index: number
 </script>
 
 <fieldset class="bordered"><legend>Audio</legend>
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Encoder</div>
-    <select class="select acodec" bind:value={audio_codec}>
+    <select class="select acodec"
+      bind:value={$command.outputs[output_index].per_file_main_options.c.a.value}
+    >
       <option value="copy">copy (Use source)</option>
       <optgroup label="AAC">
         <option value="aac">AAC (aac)</option>
@@ -26,7 +27,9 @@
       </optgroup> -->
     </select>
   </div>
-  <AudioCodecOptions_aac />
+  {#if $command.outputs[output_index].per_file_main_options.c.a.value === 'aac'}
+    <AudioCodecOptions_aac />
+  {/if}
 </fieldset>
 <!-- TODO -->
 <!-- <div>per-stream audio options: audio stream [{stream_index}]</div> -->

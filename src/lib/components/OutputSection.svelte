@@ -52,18 +52,15 @@
         {/if}
       </div>
       
-      {#each $command.outputs[output_index].streams as stream, i}
+      {#each $command.outputs[output_index].streams as stream, stream_index}
         {#if stream.type === 'video'}
           <Expandable expanded={video_enabled}>
-            <OutputVideoSettings 
-              output_index={output_index}
-              stream_index={i}
-            />
+            <OutputVideoSettings {output_index} {stream_index} />
           </Expandable>
         {/if}
         {#if stream.type === 'audio'}
           <Expandable expanded={audio_enabled}>
-            <OutputAudioSettings index={i} />
+            <OutputAudioSettings {output_index} {stream_index} />
           </Expandable>
         {/if}
       {/each}
