@@ -41,9 +41,10 @@
         <!-- TODO: the rest of the input options -->
       {/if}
     </span>
-    {#each input.streams as stream}
+    <!-- TODO: per-stream input options -->
+    <!-- {#each input.streams as stream}
       <span>per_stream_input_options for {stream.type} stream[{stream.index}] </span>
-    {/each}
+    {/each} -->
   </span>
   <span class="cmd-input-file">{`-i ${input.url} `}</span>
 {/each}
