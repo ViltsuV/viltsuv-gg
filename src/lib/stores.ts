@@ -63,6 +63,12 @@ function generate_stream(type: StreamType, index: number): Stream {
 
 const generate_av_input = () => {
   let input: FFMPEG_Input = {
+    ui: {
+      duration: {
+        min: 0,
+        sec: 0
+      }
+    },
     url: 'input_path',
     per_file_main_options: {
       c: {

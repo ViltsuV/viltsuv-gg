@@ -1,5 +1,11 @@
 <script lang="ts">
+	import Expandable from "$lib/components/Expandable.svelte"
+  import { command } from "$lib/stores"
+
   export let input_index: number
+
+  let show_per_file_input_options = true
+
 </script>
 
 <!-- Per-file main options:
@@ -27,8 +33,27 @@
   -discard            discard
   -disposition        disposition -->
 
-  per-file input video options<br/>
-  per-file input audio options
+<fieldset class="bordered"><legend>Video</legend>
+  <Expandable expanded={show_per_file_input_options}>
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
+      title="only for the tool, does not effect the command"
+    >
+      <div class="input-group-shim">Duration</div>
+      <div class="flex flex-row">
+        <input type="number" class="input"
+          bind:value={$command.inputs[input_index].ui.duration.min}
+        >
+        <div class="input-group-shim mr-2">min</div>
+        <input type="number" class="input"
+          bind:value={$command.inputs[input_index].ui.duration.sec}
+        >
+        <div class="input-group-shim">sec</div>
+      </div>
+    </div>
+  </Expandable>
+</fieldset>
+
+<!-- <div>per-file input audio options</div> -->
 
 <!-- Advanced per-file options:
 
@@ -78,8 +103,6 @@
 <style lang="postcss">
   fieldset {
     @apply pl-2 pb-2 pr-2;
-    border-width: 1px;
-    border-color: transparent;
   }
   .bordered {
     @apply border border-tertiary-500;

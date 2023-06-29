@@ -860,6 +860,12 @@ export type FFMPEG_Time = string
 export type FFMPEG_Date = string | 'now'
 
 export type FFMPEG_Input = {
+  ui: {
+    duration: {
+      min: number,
+      sec: number,
+    }
+  }
   url: string
   per_file_main_options: FFMPEG_InputPerFileMainOptions
   streams: Stream[]
