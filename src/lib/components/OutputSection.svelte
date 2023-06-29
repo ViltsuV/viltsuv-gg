@@ -17,6 +17,7 @@
       return $command
     })
   }
+  
   $: if (video_enabled) {
     command.update(($command) => {
       $command.outputs[output_index].per_file_main_options.container.selected_container =
@@ -24,6 +25,10 @@
       return $command
     })
   }
+
+  $: $command.outputs[output_index].per_file_main_options.container.selected_container = !$command.outputs[output_index].per_file_main_options.vn 
+    ? $command.outputs[output_index].per_file_main_options.container.selected_video_container
+    : $command.outputs[output_index].per_file_main_options.container.selected_audio_container
 </script>
 
 <fieldset class="bordered"><legend>Output [{output_index}]</legend>
