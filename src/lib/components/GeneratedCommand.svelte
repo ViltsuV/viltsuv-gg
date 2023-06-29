@@ -91,11 +91,11 @@
           output.per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit} </span>
       {/if}
     {/if}
-    {#if output.per_file_main_options.an === true}
-      <span class="cmd_output_per_file_main_options">-an </span>
-    {:else}
-      {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value} </span>{/if}
-    {/if}
+  {/if}
+  {#if output.per_file_main_options.an === true}
+    <span class="cmd_output_per_file_main_options">-an </span>
+  {:else}
+    {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value} </span>{/if}
   {/if}
   <!-- <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span> -->
   <span class="cmd-output-file">{output.url}.{output.per_file_main_options.container.selected_container}</span>
