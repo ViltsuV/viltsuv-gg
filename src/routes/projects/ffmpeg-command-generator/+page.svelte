@@ -20,7 +20,7 @@
   <GlobalOptions />
   
   {#each $command.inputs as input, i}
-    <InputSection index={i} />
+    <InputSection input_index={i} />
   {/each}
 
   {#each $command.outputs as output, i}

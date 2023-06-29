@@ -2,13 +2,13 @@
 	import PerFileInputOptions from "$lib/components/PerFileInputOptions.svelte"
   import { command } from "$lib/stores"
 
-  export let index: number
+  export let input_index: number
 </script>
 
-<fieldset class="bordered"><legend>Input [{index}]</legend>
+<fieldset class="bordered"><legend>Input [{input_index}]</legend>
 
   <fieldset class="bordered flex flex-col"><legend>Per-File Input Options</legend>
-    <PerFileInputOptions />
+    <PerFileInputOptions {input_index} />
     
   </fieldset>
   <!-- TODO -->
@@ -17,7 +17,7 @@
 
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2">
     <div class="input-group-shim">Input</div>
-    <input type="text" bind:value={$command.inputs[index].url} placeholder="input (e.g. C:\videos\input.mp4)" />
+    <input type="text" bind:value={$command.inputs[input_index].url} placeholder="input (e.g. C:\videos\input.mp4)" />
   </div>
 </fieldset>
 

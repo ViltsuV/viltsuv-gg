@@ -1,5 +1,5 @@
 <script lang="ts">
-
+  export let input_index: number
 </script>
 
 <!-- Per-file main options:
