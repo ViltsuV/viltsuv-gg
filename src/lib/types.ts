@@ -861,6 +861,7 @@ export type FFMPEG_Date = string | 'now'
 
 export type FFMPEG_Input = {
   ui: {
+    fps: number
     duration: {
       min: number,
       sec: number,

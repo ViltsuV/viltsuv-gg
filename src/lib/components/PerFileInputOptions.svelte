@@ -50,6 +50,19 @@
         <div class="input-group-shim">sec</div>
       </div>
     </div>
+
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
+      title="only for the tool, does not effect the command"
+    >
+      <div class="input-group-shim">Frame rate</div>
+      <div class="flex flex-row">
+        <input type="number" class="input"
+          bind:value={$command.inputs[input_index].ui.fps}
+        >
+        <div class="input-group-shim">fps</div>
+      </div>
+    </div>
+
   </Expandable>
 </fieldset>
 
