@@ -230,10 +230,12 @@
     <div class="flex flex-row">
       <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
         <div class="input-group-shim">Bitrate</div>
-        <input type="number" name="bitrate-value" />
-        <select class="select" name="bitrate-unit">
-          <option value="kbps">Kbps</option>
-          <option value="mbps">Mbps</option>
+        <input type="number" name="bitrate-value" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.abr.value} />
+        <select class="select" name="bitrate-unit"
+          bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.abr.unit}
+        >
+          <option value="k">kbps</option>
+          <option value="M">Mbps</option>
         </select>
       </div>
       <button class="btn btn-icon variant-filled-surface ml-2"
@@ -284,8 +286,8 @@
           <select class="select" name="maxrate_unit"
             bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.max_bitrate.unit}
           >
-            <option value="K" title="unit">Kbps (K)</option>
-            <option value="M" title="unit">Mbps (M)</option>
+            <option value="k" title="unit">kbps</option>
+            <option value="M" title="unit">Mbps</option>
           </select>
         </div>
       </div>
@@ -298,9 +300,11 @@
           <input class="input" type="number" name="bufsize"
             bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.value}
           >
-          <select class="select" name="bufsize_unit" bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit}>
-            <option value="K">Kbps (K)</option>
-            <option value="M">Mbps (M)</option>
+          <select class="select" name="bufsize_unit" 
+            bind:value={$command.outputs[output_index].per_file_main_options.c.v.encoder_options.libx264.buffer_size.unit}
+          >
+            <option value="k">kbps</option>
+            <option value="M">Mbps</option>
           </select>
         </div>
       </div>

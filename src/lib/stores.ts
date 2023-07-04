@@ -194,16 +194,16 @@ function generate_video_encoder_options(): FFMPEG_VideoEncoderOptions {
         value: 23,
       },
       abr: {
-        unit: 'K',
+        unit: 'k',
         value: 4000,
       },
       constrain_bitrate: false,
       max_bitrate: {
-        unit: 'K',
+        unit: 'k',
         value: 4000,
       },
       buffer_size: {
-        unit: 'K',
+        unit: 'k',
         value: 8000,
       },
       fastdecode: {

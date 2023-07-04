@@ -825,7 +825,7 @@ export type FFMPEG_AudioDecoderOptions = {
   // todo e.g. aac, mp3, opus/libopus etc.
 }
 
-export type BitrateUnit = 'K' | 'M'
+export type BitrateUnit = 'k' | 'M'
 
 /**
  * @description describes all possible ways to express a unit of time that FFMPEG can interpret
