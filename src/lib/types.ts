@@ -256,7 +256,7 @@ export type FFMPEG_CommonPerFileMainOptions = {
    * @kind (input/output)
    * 
    */
-  ss: FFMPEG_Time | null
+  ss: FFMPEG_Time
   /**
    * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
    * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
@@ -851,7 +851,7 @@ export type BitrateUnit = 'K' | 'M'
     ‘23.189’
     23.189 seconds
  */
-export type FFMPEG_Time = string
+export type FFMPEG_Time = number
 
 /**
  * @description https://ffmpeg.org/ffmpeg-utils.html#date-syntax
@@ -861,10 +861,11 @@ export type FFMPEG_Date = string | 'now'
 
 export type FFMPEG_Input = {
   ui: {
+    start_frame: number
     fps: number
     duration: {
-      min: number,
-      sec: number,
+      min: number
+      sec: number
     }
   }
   url: string

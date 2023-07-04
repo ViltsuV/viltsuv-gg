@@ -37,6 +37,7 @@
       {#if input.per_file_main_options.vn === true}
         <span class="cmd_per_file_input_video_options">-vn </span>
       {:else}
+        {#if input.per_file_main_options.ss}<span class="cmd_per_file_input_video_options">-ss {input.per_file_main_options.ss.toFixed(2)} </span>{/if}
         {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
         <!-- TODO: the rest of the input options -->
       {/if}

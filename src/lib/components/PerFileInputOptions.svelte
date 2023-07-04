@@ -1,11 +1,18 @@
 <script lang="ts">
 	import Expandable from "$lib/components/Expandable.svelte"
   import { command } from "$lib/stores"
+	import { RangeSlider } from "@skeletonlabs/skeleton"
 
   export let input_index: number
 
   let show_per_file_input_options = true
 
+  $: frames = ($command.inputs[input_index].ui.duration.min * 60 + $command.inputs[input_index].ui.duration.sec) * $command.inputs[input_index].ui.fps
+
+  $: start_frame = $command.inputs[input_index].ui.start_frame
+  $: duration_seconds = $command.inputs[input_index].ui.duration.min * 60 + $command.inputs[input_index].ui.duration.sec
+  $: fps = $command.inputs[input_index].ui.fps
+  $: start_second = start_frame / fps
 </script>
 
 <!-- Per-file main options:
@@ -36,23 +43,52 @@
 <fieldset class="bordered"><legend>Video</legend>
   <Expandable expanded={show_per_file_input_options}>
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
-      title="only for the tool, does not effect the command"
+      title={"Set input file duration within the tool. \nDoes not impact the command directly. \n"}
     >
       <div class="input-group-shim">Duration</div>
       <div class="flex flex-row">
         <input type="number" class="input"
           bind:value={$command.inputs[input_index].ui.duration.min}
+          on:change={() => {
+            if ($command.inputs[input_index].ui.duration.min < 0) {
+              command.update(($command) => {
+                $command.inputs[input_index].ui.duration.min = 0
+                return $command
+              })
+            }
+            if ($command.inputs[input_index].ui.duration.min !== Math.floor($command.inputs[input_index].ui.duration.min)) {
+              command.update(($command) => {
+                $command.inputs[input_index].ui.duration.min = Math.floor($command.inputs[input_index].ui.duration.min)
+                return $command
+              })
+            }
+          }}
         >
         <div class="input-group-shim mr-2">min</div>
         <input type="number" class="input"
+          max="59.99"
           bind:value={$command.inputs[input_index].ui.duration.sec}
+          on:change={() => {
+            if ($command.inputs[input_index].ui.duration.sec > 60) {
+              command.update(($command) => {
+                $command.inputs[input_index].ui.duration.sec = 60
+                return $command
+              })
+            }
+            if ($command.inputs[input_index].ui.duration.sec < 0) {
+              command.update(($command) => {
+                $command.inputs[input_index].ui.duration.sec = 0
+                return $command
+              })
+            }
+          }}
         >
         <div class="input-group-shim">sec</div>
       </div>
     </div>
 
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
-      title="only for the tool, does not effect the command"
+      title={"Set input file frame rate within the tool. \nDoes not impact the command directly. \n"}
     >
       <div class="input-group-shim">Frame rate</div>
       <div class="flex flex-row">
@@ -63,6 +99,54 @@
       </div>
     </div>
 
+    <div class="flex">
+      <RangeSlider
+        name="range-slider"
+        class="flex-grow"
+        bind:value={$command.inputs[input_index].ui.start_frame}
+        on:change={() => {
+          command.update(($command) => {
+            $command.inputs[input_index].per_file_main_options.ss = $command.inputs[input_index].ui.start_frame / fps
+            return $command
+          })
+        }}
+        min={0}
+        max={frames}
+        step={1}
+        accent="accent-error-600 dark:accent-error-400"
+        title="
+          remove the first {
+          $command.inputs[input_index].per_file_main_options.ss.toFixed(2)
+          } seconds from the beginning of this input
+        "
+        disabled={
+          $command.inputs[input_index].ui.duration.sec === 0 && 
+          $command.inputs[input_index].ui.duration.min === 0
+        }
+      >
+        <div class="text-sm flex flex-row flex-wrap justify-between">
+          <div class="mx-2">start second (-ss)</div>
+          <div class="mx-2">{start_second.toFixed(2)} / {duration_seconds} sec</div>
+          <div class="mx-2">{Math.floor(start_second / 60) + " min " + ((start_second % 60)).toFixed(2) + " sec"}</div>
+          <div class="mx-2">frame {start_frame.toFixed(0)} / {frames.toFixed(0)}</div>
+        </div>
+      </RangeSlider>
+      <input type="number" class="input ml-2 max-w-[6rem]"
+        step="0.01"
+        title={
+          start_second.toFixed(2) + " sec\n" +
+          Math.floor(start_second / 60) + " min " + ((start_second % 60)).toFixed(2) + " sec"
+        }
+        bind:value={$command.inputs[input_index].per_file_main_options.ss}
+        on:change={()=>{
+          command.update(($command) => {
+            $command.inputs[input_index].ui.start_frame = $command.inputs[input_index].per_file_main_options.ss * fps
+            return $command
+          })
+        }}
+      >
+    </div>
+    
   </Expandable>
 </fieldset>
 

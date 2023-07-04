@@ -64,6 +64,7 @@ function generate_stream(type: StreamType, index: number): Stream {
 const generate_av_input = () => {
   let input: FFMPEG_Input = {
     ui: {
+      start_frame: 0,
       fps: 30,
       duration: {
         min: 0,
@@ -89,7 +90,7 @@ const generate_av_input = () => {
       f: null, // format normally auto detected for input files
       t: null, // limit the duration of data read from the input file
       to: null, // stop reading the input at position (if -t is defined, it takes priority)
-      ss: null, // seek to position and begin decoding / encoding from there
+      ss: 0, // seek to position and begin decoding / encoding from there
       sseof: null, // seek to position from end of file (input only)
       // metadata: null, // output only
       // timestamp: null, // output only
@@ -141,7 +142,7 @@ function generate_av_output(): FFMPEG_Output {
       f: null, // guessed from the file extension for output files
       t: null, // stop writing the output after its duration reaches duration.
       to: null, // Stop writing the output at position (if -t is defined, it takes priority)
-      ss: null, // seek to position and begin decoding / encoding from there
+      ss: 0, // seek to position and begin decoding / encoding from there
       timestamp: null, // add timestamp (output only)
       metadata: [], // Set a metadata key/value pair (output,per-metadata)
       advanced: {}
