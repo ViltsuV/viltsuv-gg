@@ -97,6 +97,9 @@
     <span class="cmd_output_per_file_main_options">-an </span>
   {:else}
     {#if output.per_file_main_options.c.a.value}<span class="cmd_output_per_file_main_options">-c:a {output.per_file_main_options.c.a.value} </span>{/if}
+    {#if output.per_file_main_options.c.a.value === 'aac'}
+      {#if output.per_file_main_options.c.a.encoder_options.aac.bitrate !== 'default'}<span class="cmd_output_per_file_main_options">-b:a {output.per_file_main_options.c.a.encoder_options.aac.bitrate}k </span>{/if}
+    {/if}
   {/if}
   <!-- <span class="cmd-output-file-options">{`${output.per_file_main_options} `}</span> -->
   <span class="cmd-output-file">{output.url}.{output.per_file_main_options.container.selected_container}</span>

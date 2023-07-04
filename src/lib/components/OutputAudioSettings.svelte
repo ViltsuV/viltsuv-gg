@@ -28,7 +28,7 @@
     </select>
   </div>
   {#if $command.outputs[output_index].per_file_main_options.c.a.value === 'aac'}
-    <AudioCodecOptions_aac />
+    <AudioCodecOptions_aac {output_index} />
   {/if}
 </fieldset>
 <!-- TODO -->

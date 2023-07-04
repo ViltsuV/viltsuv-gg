@@ -1045,6 +1045,7 @@ export type Levels_libx264 = [
 ]
 
 export type AudioEncoderOptions_aac = {
+  bitrate: string
   /*
   
   todo:
