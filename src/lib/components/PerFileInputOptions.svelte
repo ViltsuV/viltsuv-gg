@@ -46,7 +46,7 @@
       title={"Set input file duration within the tool. \nDoes not impact the command directly. \n"}
     >
       <div class="input-group-shim">Duration</div>
-      <div class="flex flex-row">
+      <div class="flex flex-row !pr-2">
         <input type="number" class="input"
           bind:value={$command.inputs[input_index].ui.duration.min}
           on:change={() => {
@@ -91,7 +91,7 @@
       title={"Set input file frame rate within the tool. \nDoes not impact the command directly. \n"}
     >
       <div class="input-group-shim">Frame rate</div>
-      <div class="flex flex-row">
+      <div class="flex flex-row !pr-2">
         <input type="number" class="input"
           bind:value={$command.inputs[input_index].ui.fps}
         >
@@ -131,20 +131,23 @@
           <div class="mx-2">frame {start_frame.toFixed(0)} / {frames.toFixed(0)}</div>
         </div>
       </RangeSlider>
-      <input type="number" class="input ml-2 max-w-[6rem]"
-        step="0.01"
-        title={
-          start_second.toFixed(2) + " sec\n" +
-          Math.floor(start_second / 60) + " min " + ((start_second % 60)).toFixed(2) + " sec"
-        }
-        bind:value={$command.inputs[input_index].per_file_main_options.ss}
-        on:change={()=>{
-          command.update(($command) => {
-            $command.inputs[input_index].ui.start_frame = $command.inputs[input_index].per_file_main_options.ss * fps
-            return $command
-          })
-        }}
-      >
+      <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] max-w-[10rem] ml-2 my-2">
+        <input type="number" class="input max-w-[6rem]"
+          step="0.01"
+          title={
+            start_second.toFixed(2) + " sec\n" +
+            Math.floor(start_second / 60) + " min " + ((start_second % 60)).toFixed(2) + " sec"
+          }
+          bind:value={$command.inputs[input_index].per_file_main_options.ss}
+          on:change={()=>{
+            command.update(($command) => {
+              $command.inputs[input_index].ui.start_frame = $command.inputs[input_index].per_file_main_options.ss * fps
+              return $command
+            })
+          }}
+        >
+        <div class="input-group-shim my-2 mr-2">sec</div>
+      </div>
     </div>
     
   </Expandable>
