@@ -64,6 +64,7 @@ function generate_stream(type: StreamType, index: number): Stream {
 const generate_av_input = () => {
   let input: FFMPEG_Input = {
     ui: {
+      start_frame_eof: 0,
       start_frame: 0,
       fps: 30,
       duration: {
@@ -91,7 +92,7 @@ const generate_av_input = () => {
       t: null, // limit the duration of data read from the input file
       to: null, // stop reading the input at position (if -t is defined, it takes priority)
       ss: 0, // seek to position and begin decoding / encoding from there
-      sseof: null, // seek to position from end of file (input only)
+      sseof: 0, // seek to position from end of file (input only)
       // metadata: null, // output only
       // timestamp: null, // output only
       advanced: {}

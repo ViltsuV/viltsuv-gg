@@ -257,12 +257,6 @@ export type FFMPEG_CommonPerFileMainOptions = {
    * 
    */
   ss: FFMPEG_Time
-  /**
-   * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
-   * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
-   * @kind (input)
-   */
-  sseof?: FFMPEG_Time | null
   advanced: FFMPEG_AdvancedPerFileMainOptions
 }
 
@@ -341,165 +335,165 @@ export type FFMPEG_InputPerFileMainOptions =
      * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
      * @kind (input)
      */
-    sseof?: FFMPEG_Time | null
+    sseof: FFMPEG_Time
     advanced: FFMPEG_AdvancedPerFileMainOptions
   }
 
-/**
- * @description represents supported FFMPEG's per-file main options.
+// /**
+//  * @description represents supported FFMPEG's per-file main options.
 
-  Per-file main options:
+//   Per-file main options:
 
-    -f fmt              force format
+//     -f fmt              force format
 
-    -c codec            codec name
+//     -c codec            codec name
 
-    -codec codec        codec name
+//     -codec codec        codec name
 
-    -pre preset         preset name
+//     -pre preset         preset name
 
-    -map_metadata outfile[,metadata]:infile[,metadata]  set metadata information of outfile from infile
+//     -map_metadata outfile[,metadata]:infile[,metadata]  set metadata information of outfile from infile
 
-    -t duration         record or transcode "duration" seconds of audio/video
+//     -t duration         record or transcode "duration" seconds of audio/video
 
-    -to time_stop       record or transcode stop time
+//     -to time_stop       record or transcode stop time
 
-    -fs limit_size      set the limit file size in bytes
+//     -fs limit_size      set the limit file size in bytes
 
-    -ss time_off        set the start time offset
+//     -ss time_off        set the start time offset
 
-    -sseof time_off     set the start time offset relative to EOF
+//     -sseof time_off     set the start time offset relative to EOF
 
-    -seek_timestamp     enable/disable seeking by timestamp with -ss
+//     -seek_timestamp     enable/disable seeking by timestamp with -ss
 
-    -timestamp time     set the recording timestamp ('now' to set the current time)
+//     -timestamp time     set the recording timestamp ('now' to set the current time)
 
-    -metadata string=string  add metadata
+//     -metadata string=string  add metadata
 
-    -program title=string:st=number...  add program with specified streams
+//     -program title=string:st=number...  add program with specified streams
 
-    -target type        specify target file type ("vcd", "svcd", "dvd", "dv" or "dv50" with optional prefixes "pal-", "ntsc-" or "film-")
+//     -target type        specify target file type ("vcd", "svcd", "dvd", "dv" or "dv50" with optional prefixes "pal-", "ntsc-" or "film-")
 
-    -apad               audio pad
+//     -apad               audio pad
 
-    -frames number      set the number of frames to output
+//     -frames number      set the number of frames to output
 
-    -filter filter_graph  set stream filtergraph
+//     -filter filter_graph  set stream filtergraph
 
-    -filter_script filename  read stream filtergraph description from a file
+//     -filter_script filename  read stream filtergraph description from a file
 
-    -reinit_filter      reinit filtergraph on input parameter changes
+//     -reinit_filter      reinit filtergraph on input parameter changes
 
-    -discard            discard
+//     -discard            discard
 
-    -disposition        disposition
- */
-export type FFMPEG_PerFileMainOptions = {
-  /**
-   * @description Select an encoder (when used before an output file) 
-   * or a decoder (when used before an input file) for one or more streams. 
-   * codec is the name of a decoder/encoder or a special value copy (output only) 
-   * to indicate that the stream is not to be re-encoded.
-   * @kind (input/output,per-stream)
-   * @example 
-   * // for input: use 'aac' and 'h264_cuvid' decoders for all audio & video streams
-   * ffmpeg -c:a aac -c:v h264_cuvid -i INPUT
-   * // for output: use 'aac' and 'libx264' encoders for all audio & video streams
-   * ffmpeg -i INPUT -c:a aac -c:v libx264 OUTPUT.mp4
-   */
-  c: {
-    v: {
-      encoder_options: FFMPEG_VideoEncoderOptions
-      decoder_options?: FFMPEG_VideoDecoderOptions
-      value: VideoEncoders
-    }
-    a?: {
-      encoder_options?: FFMPEG_AudioEncoderOptions
-      decoder_options?: FFMPEG_AudioDecoderOptions | null | string
-      value: VideoEncoders | null | string
-    }
-    s?: null | string // todo subtitles
-    d?: null | string // todo data streams
-  }
-  /**
-   * @description disable video for the input or output.
-   * This is an input/output level flag that can be set
-   * per input or output for all streams
-   */
-  vn: boolean | null
-  /**
-   * @description disable audio for the input or output.
-   * This is an input/output level flag that can be set
-   * per input or output for all streams
-   */
-  an: boolean | null
-  /**
-   * @description force input/output format
-   * input: normally auto detected for input files
-   * output: guessed from the file extension for output files
-   * so this option is not needed in most cases
-   * @kind (input/output)
-   */
-  f: string | null
-  /**
-   * @description record or transcode "duration" seconds of audio/video (see FFMPEG_TimeUnit)
-   * 
-   * note: -to and -t are mutually exclusive and -t has priority
-   * 
-   * @kind (input/output)
-   * @example
-   * as input option:
-   * limit the duration of data read from the input file
-   * 
-   * as output option: 
-   * stop writing the output after its duration reaches duration
-   */
-  t: FFMPEG_Time | null
-  /**
-   * @description record or transcode stop time (see FFMPEG_TimeUnit).
-   * 
-   * - input: Stop reading the input at position
-   * 
-   * - output: Stop writing the output at position
-   * 
-   * note: -to and -t are mutually exclusive and -t has priority
-   * 
-   * @kind (input/output)
-   * @example stop writing 60s from beginning of file
-   * 
-   * ffmpeg -i input -to 60 -c copy output
-   */
-  to: FFMPEG_Time | null
-  /**
-   * @docs https://ffmpeg.org/ffmpeg-all.html#Main-options
-   * @description set the start time offset (see FFMPEG_TimeUnit)
-   * @kind (input/output)
-   * 
-   */
-  ss: FFMPEG_Time | null
-  /**
-   * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
-   * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
-   * @kind (input)
-   */
-  sseof?: FFMPEG_Time | null
-  /**
-   * @description set the recording timestamp ('now' to set the current time)
-   * @kind (output)
-   */
-  timestamp?: FFMPEG_Date | 'now' | null
-  /**
-   * @description add metadata to transcoded file.
-   * @kind (output,per-metadata)
-   * @example -metadata key=value
-   * -metadata title="my title"
-   * 
-   * set the language of the first audio stream
-   * -metadata:s:a:0 language=eng
-   */
-  metadata?: string[] | null
-  advanced: FFMPEG_AdvancedPerFileMainOptions
-}
+//     -disposition        disposition
+//  */
+// export type FFMPEG_PerFileMainOptions = {
+//   /**
+//    * @description Select an encoder (when used before an output file) 
+//    * or a decoder (when used before an input file) for one or more streams. 
+//    * codec is the name of a decoder/encoder or a special value copy (output only) 
+//    * to indicate that the stream is not to be re-encoded.
+//    * @kind (input/output,per-stream)
+//    * @example 
+//    * // for input: use 'aac' and 'h264_cuvid' decoders for all audio & video streams
+//    * ffmpeg -c:a aac -c:v h264_cuvid -i INPUT
+//    * // for output: use 'aac' and 'libx264' encoders for all audio & video streams
+//    * ffmpeg -i INPUT -c:a aac -c:v libx264 OUTPUT.mp4
+//    */
+//   c: {
+//     v: {
+//       encoder_options: FFMPEG_VideoEncoderOptions
+//       decoder_options?: FFMPEG_VideoDecoderOptions
+//       value: VideoEncoders
+//     }
+//     a?: {
+//       encoder_options?: FFMPEG_AudioEncoderOptions
+//       decoder_options?: FFMPEG_AudioDecoderOptions | null | string
+//       value: VideoEncoders | null | string
+//     }
+//     s?: null | string // todo subtitles
+//     d?: null | string // todo data streams
+//   }
+//   /**
+//    * @description disable video for the input or output.
+//    * This is an input/output level flag that can be set
+//    * per input or output for all streams
+//    */
+//   vn: boolean | null
+//   /**
+//    * @description disable audio for the input or output.
+//    * This is an input/output level flag that can be set
+//    * per input or output for all streams
+//    */
+//   an: boolean | null
+//   /**
+//    * @description force input/output format
+//    * input: normally auto detected for input files
+//    * output: guessed from the file extension for output files
+//    * so this option is not needed in most cases
+//    * @kind (input/output)
+//    */
+//   f: string | null
+//   /**
+//    * @description record or transcode "duration" seconds of audio/video (see FFMPEG_TimeUnit)
+//    * 
+//    * note: -to and -t are mutually exclusive and -t has priority
+//    * 
+//    * @kind (input/output)
+//    * @example
+//    * as input option:
+//    * limit the duration of data read from the input file
+//    * 
+//    * as output option: 
+//    * stop writing the output after its duration reaches duration
+//    */
+//   t: FFMPEG_Time | null
+//   /**
+//    * @description record or transcode stop time (see FFMPEG_TimeUnit).
+//    * 
+//    * - input: Stop reading the input at position
+//    * 
+//    * - output: Stop writing the output at position
+//    * 
+//    * note: -to and -t are mutually exclusive and -t has priority
+//    * 
+//    * @kind (input/output)
+//    * @example stop writing 60s from beginning of file
+//    * 
+//    * ffmpeg -i input -to 60 -c copy output
+//    */
+//   to: FFMPEG_Time | null
+//   /**
+//    * @docs https://ffmpeg.org/ffmpeg-all.html#Main-options
+//    * @description set the start time offset (see FFMPEG_TimeUnit)
+//    * @kind (input/output)
+//    * 
+//    */
+//   ss: FFMPEG_Time | null
+//   /**
+//    * @description set the start time offset relative to EOF (see FFMPEG_TimeUnit).
+//    * Like the -ss option but relative to the "end of file". That is negative values are earlier in the file, 0 is at EOF.
+//    * @kind (input)
+//    */
+//   sseof: FFMPEG_Time
+//   /**
+//    * @description set the recording timestamp ('now' to set the current time)
+//    * @kind (output)
+//    */
+//   timestamp?: FFMPEG_Date | 'now' | null
+//   /**
+//    * @description add metadata to transcoded file.
+//    * @kind (output,per-metadata)
+//    * @example -metadata key=value
+//    * -metadata title="my title"
+//    * 
+//    * set the language of the first audio stream
+//    * -metadata:s:a:0 language=eng
+//    */
+//   metadata?: string[] | null
+//   advanced: FFMPEG_AdvancedPerFileMainOptions
+// }
 
 /**
  * @description represents supported FFMPEG's advanced per-file options.
@@ -862,6 +856,7 @@ export type FFMPEG_Date = string | 'now'
 export type FFMPEG_Input = {
   ui: {
     start_frame: number
+    start_frame_eof: number
     fps: number
     duration: {
       min: number

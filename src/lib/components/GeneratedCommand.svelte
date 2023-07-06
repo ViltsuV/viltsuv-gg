@@ -32,21 +32,22 @@
 {/if}
 
 {#each $command.inputs as input}
-  <span class="cmd-input-file-options">
-    <span class="cmd_per_file_input_options">
-      {#if input.per_file_main_options.vn === true}
-        <span class="cmd_per_file_input_video_options">-vn </span>
-      {:else}
-        {#if input.per_file_main_options.ss}<span class="cmd_per_file_input_video_options">-ss {input.per_file_main_options.ss.toFixed(2)} </span>{/if}
-        {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
-        <!-- TODO: the rest of the input options -->
-      {/if}
-    </span>
-    <!-- TODO: per-stream input options -->
-    <!-- {#each input.streams as stream}
-      <span>per_stream_input_options for {stream.type} stream[{stream.index}] </span>
-    {/each} -->
-  </span>
+  {#if input.per_file_main_options.vn === true}
+    <span class="cmd_per_file_input_video_options">-vn </span>
+  {:else}
+    {#if input.per_file_main_options.ss}<span class="cmd_per_file_input_video_options">-ss {input.per_file_main_options.ss.toFixed(2)} </span>{/if}
+    {#if input.per_file_main_options.sseof}<span 
+        class="cmd_per_file_input_video_options"
+        title={input.per_file_main_options.ss > 0 ? '-ss option will override -sseof if both are specified' : ''}
+        style={input.per_file_main_options.ss > 0 ? 'color: gray;' : ''}
+      >-sseof -{input.per_file_main_options.sseof.toFixed(2)} </span>{/if}
+    {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
+    <!-- TODO: the rest of the input options -->
+  {/if}
+  <!-- TODO: per-stream input options -->
+  <!-- {#each input.streams as stream}
+    <span>per_stream_input_options for {stream.type} stream[{stream.index}] </span>
+  {/each} -->
   <span class="cmd-input-file">{`-i ${input.url} `}</span>
 {/each}
 
@@ -55,7 +56,6 @@
     <span class="cmd_output_per_file_main_options">-vn </span>
   {:else}
     {#if output.per_file_main_options.ss}<span class="cmd_output_per_file_main_options">-ss {output.per_file_main_options.ss} </span>{/if}
-    {#if output.per_file_main_options.sseof}<span class="cmd_output_per_file_main_options">-sseof {output.per_file_main_options.sseof} </span>{/if}
     {#if output.per_file_main_options.t}<span class="cmd_output_per_file_main_options">-t {output.per_file_main_options.t} </span>{/if}
     {#if output.per_file_main_options.metadata.length > 0}<span class="cmd_output_per_file_main_options">-metadata {output.per_file_main_options.metadata} </span>{/if}
     {#if output.per_file_main_options.timestamp}<span class="cmd_output_per_file_main_options">-timestamp {output.per_file_main_options.timestamp} </span>{/if}
@@ -187,7 +187,7 @@
     background-color: rgba(43, 158, 255, 0.2);
     color: rgba(43, 158, 255, 1);
   }
-  .input_file_options, .cmd-input-file-options {
+  .input_file_options, .cmd-input-file-options, .cmd_per_file_input_video_options {
     background-color: rgba(43, 158, 255, 0.2);
     color: rgb(193, 224, 255);
   }
