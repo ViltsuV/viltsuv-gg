@@ -6,8 +6,13 @@
   export let input_index: number
 
   let show_per_file_input_options = true
+  let current_t_value = 0
+  let previous_t_value = current_t_value
 
-  $: frames = ($command.inputs[input_index].ui.duration.min * 60 + $command.inputs[input_index].ui.duration.sec) * $command.inputs[input_index].ui.fps
+  $: frames = (
+      $command.inputs[input_index].ui.duration.min * 60 + 
+      $command.inputs[input_index].ui.duration.sec
+    ) * $command.inputs[input_index].ui.fps
 
   $: start_frame = $command.inputs[input_index].ui.start_frame
   $: start_frame_eof = $command.inputs[input_index].ui.start_frame_eof
@@ -15,6 +20,28 @@
   $: fps = $command.inputs[input_index].ui.fps
   $: start_second = start_frame / fps
   $: start_second_eof = start_frame_eof / fps
+
+  $: if (typeof current_t_value === 'number' && current_t_value >= 0 && current_t_value <= duration_seconds ) {
+		command.update(($command) => {
+			$command.inputs[input_index].per_file_main_options.t = current_t_value
+			return $command
+		})
+	} else {
+    current_t_value = previous_t_value
+  }
+
+  function validate_t(html_node: HTMLInputElement, new_input_value: any) {
+    return {
+      update(new_input_value: any) {
+        if (new_input_value === null || current_t_value < parseFloat(html_node.min) || current_t_value > parseFloat(html_node.max)) {
+          current_t_value = previous_t_value
+        } else {
+          current_t_value = parseFloat(new_input_value)
+        }
+        previous_t_value = current_t_value
+      }
+		}
+  }
 </script>
 
 <!-- Per-file main options:
@@ -44,6 +71,8 @@
 
 <fieldset class="bordered"><legend>Video</legend>
   <Expandable expanded={show_per_file_input_options}>
+
+    <!-- Input Duration (within tool) -->
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
       title={"Set input file duration within the tool. \nDoes not impact the command directly. \n"}
     >
@@ -89,6 +118,7 @@
       </div>
     </div>
 
+    <!-- Framerate (within tool) -->
     <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
       title={"Set input file frame rate within the tool. \nDoes not impact the command directly. \n"}
     >
@@ -101,7 +131,7 @@
       </div>
     </div>
 
-    <div class="flex">
+    <div class="flex"><!-- start second (ss) -->
       <RangeSlider
         name="range-slider-ss"
         class="flex-grow"
@@ -116,11 +146,9 @@
         max={frames}
         step={1}
         accent="accent-error-600 dark:accent-error-400"
-        title="
-          remove the first {
+        title="remove the first {
           $command.inputs[input_index].per_file_main_options.ss.toFixed(2)
-          } seconds from the beginning of this input
-        "
+          } seconds from the beginning of this input"
         disabled={
           $command.inputs[input_index].ui.duration.sec === 0 && 
           $command.inputs[input_index].ui.duration.min === 0
@@ -152,7 +180,7 @@
       </div>
     </div>
 
-    <div class="flex">
+    <div class="flex"><!-- start second relative to end-of-ofile (sseof) -->
       <RangeSlider
         name="range-slider-sseof"
         class="flex-grow"
@@ -168,9 +196,9 @@
         max={frames}
         step={1}
         accent="accent-success-600 dark:accent-success-400"
-        title="keep the last {
+        title="send only the last {
           $command.inputs[input_index].per_file_main_options.sseof.toFixed(2)
-          } seconds at the end of this input"
+          } seconds at the end of this input to be further processed"
         disabled={
           $command.inputs[input_index].ui.duration.sec === 0 && 
           $command.inputs[input_index].ui.duration.min === 0
@@ -188,7 +216,7 @@
           step="0.01"
           title={
             start_second_eof.toFixed(2) + " sec\n" +
-            Math.floor(start_second_eof / 60) + " min " + ((start_second_eof % 60)).toFixed(2) + " sec"
+            Math.floor(start_second_eof / 60) + " min " + (start_second_eof % 60).toFixed(2) + " sec"
           }
           bind:value={$command.inputs[input_index].per_file_main_options.sseof}
           on:change={()=>{
@@ -202,6 +230,43 @@
       </div>
     </div>
 
+    <div class="flex"><!-- limit input duration (t) -->
+      <RangeSlider
+        name="range-slider-t"
+        class="flex-grow"
+        bind:value={current_t_value}
+        min={0}
+        max={frames / fps}
+        step={0.01}
+        accent="accent-success-600 dark:accent-success-400"
+        title="
+          limit the input duration to {
+          $command.inputs[input_index].per_file_main_options.t.toFixed(2)
+          } seconds
+        "
+        disabled={duration_seconds === 0}
+      >
+        <div class="text-sm flex flex-row flex-wrap justify-between">
+          <div class="mx-2">limit input duration (-t)</div>
+          <div class="mx-2">{(current_t_value).toFixed(2)} / {duration_seconds} sec</div>
+          <div class="mx-2">{Math.floor(current_t_value / 60) + " min " + (current_t_value % 60).toFixed(2) + " sec"}</div>
+        </div>
+      </RangeSlider>
+      <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] max-w-[10rem] ml-2 my-2">
+        <input type="number" class="input max-w-[6rem]"
+          step="0.01"
+          min="0"
+          max={duration_seconds}
+          title={
+            current_t_value.toFixed(2) + " sec\n" +
+            Math.floor(current_t_value / 60) + " min " + (current_t_value % 60).toFixed(2) + " sec"
+          }
+          use:validate_t={current_t_value}
+          bind:value={current_t_value}
+        >
+        <div class="input-group-shim my-2 mr-2">sec</div>
+      </div>
+    </div>
   </Expandable>
 </fieldset>
 
@@ -261,8 +326,5 @@
   }
   legend {
     @apply text-tertiary-500 text-lg px-1;
-  }
-  .rtl {
-    direction: rtl;
   }
 </style>

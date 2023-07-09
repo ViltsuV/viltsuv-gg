@@ -89,7 +89,7 @@ const generate_av_input = () => {
       an: false,
       vn: false,
       f: null, // format normally auto detected for input files
-      t: null, // limit the duration of data read from the input file
+      t: 0, // limit the duration of data read from the input file
       to: null, // stop reading the input at position (if -t is defined, it takes priority)
       ss: 0, // seek to position and begin decoding / encoding from there
       sseof: 0, // seek to position from end of file (input only)
@@ -141,7 +141,7 @@ function generate_av_output(): FFMPEG_Output {
       an: false,
       vn: false,
       f: null, // guessed from the file extension for output files
-      t: null, // stop writing the output after its duration reaches duration.
+      t: 0, // stop writing the output after its duration reaches duration.
       to: null, // Stop writing the output at position (if -t is defined, it takes priority)
       ss: 0, // seek to position and begin decoding / encoding from there
       timestamp: null, // add timestamp (output only)

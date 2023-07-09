@@ -42,6 +42,7 @@
         style={input.per_file_main_options.ss > 0 ? 'color: gray;' : ''}
       >-sseof -{input.per_file_main_options.sseof.toFixed(2)} </span>{/if}
     {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
+    {#if input.per_file_main_options.t}<span class="cmd_per_file_input_video_options">-t {input.per_file_main_options.t.toFixed(2)} </span>{/if}
     <!-- TODO: the rest of the input options -->
   {/if}
   <!-- TODO: per-stream input options -->

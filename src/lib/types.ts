@@ -234,7 +234,7 @@ export type FFMPEG_CommonPerFileMainOptions = {
    * as output option: 
    * stop writing the output after its duration reaches duration
    */
-  t: FFMPEG_Time | null
+  t: FFMPEG_Time
   /**
    * @description record or transcode stop time (see FFMPEG_TimeUnit).
    * 
