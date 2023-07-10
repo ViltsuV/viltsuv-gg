@@ -18,7 +18,8 @@
         <!-- <option value="aac_mf">AAC MediaFoudation (aac_mf)</option> -->
       </optgroup>
       <!-- <optgroup label="OPUS">
-        <option value="libvo_aacenc">OPUS (libopus)</option>
+        <option value="libopus">Opus (libopus)</option>
+        <option value="opus">Opus (opus)</option>
       </optgroup> -->
       <!-- <optgroup label="MP3">
         <option value="libmp3lame">MP3 (libmp3lame)</option>
