@@ -9,18 +9,7 @@
 
   let show_per_file_input_options = true
 
-  $: frames = (
-      $command.inputs[input_index].ui.duration.min * 60 + 
-      $command.inputs[input_index].ui.duration.sec
-    ) * $command.inputs[input_index].ui.fps
-
-  $: start_frame = $command.inputs[input_index].ui.start_frame
-  $: start_frame_eof = $command.inputs[input_index].ui.start_frame_eof
   $: duration_seconds = $command.inputs[input_index].ui.duration.min * 60 + $command.inputs[input_index].ui.duration.sec
-  $: fps = $command.inputs[input_index].ui.fps
-  $: start_second = start_frame / fps
-  $: start_second_eof = start_frame_eof / fps
-
 </script>
 
 <!-- Per-file main options:
@@ -110,8 +99,8 @@
       </div>
     </div>
     <PerFileInputOptions_ss {input_index} {duration_seconds} />
-    <PerFileInputOptions_sseof {input_index} {frames} {duration_seconds} {fps} {start_second_eof} />
-    <PerFileInputOptions_t {input_index} {frames} {duration_seconds} {fps} />
+    <PerFileInputOptions_sseof {input_index} {duration_seconds} />
+    <PerFileInputOptions_t {input_index} {duration_seconds} />
   </Expandable>
 </fieldset>
 

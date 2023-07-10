@@ -3,9 +3,7 @@
 	import { RangeSlider } from "@skeletonlabs/skeleton"
 
   export let input_index: number
-  export let frames: number
   export let duration_seconds: number
-  export let fps: number
 
   let current_t_value = 0
   let previous_t_value = current_t_value
@@ -40,7 +38,7 @@
     class="flex-grow"
     bind:value={current_t_value}
     min={0}
-    max={frames / fps}
+    max={duration_seconds}
     step={0.01}
     accent="accent-tertiary-700 dark:accent-tertiary-500"
     title="limit the input duration to {current_t_value.toFixed(2)} seconds"
