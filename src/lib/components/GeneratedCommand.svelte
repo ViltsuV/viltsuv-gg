@@ -173,10 +173,10 @@
   pre {
     /* prod */
     /* works great in chrome, not so great in firefox */
-    /* display: inline-table; */
+    display: inline-table;
 
     /* during dev */
-    display: grid;
+    /* display: grid; */
   }
   span {
     white-space: wrap;
