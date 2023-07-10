@@ -135,7 +135,7 @@
         class="output_file_options">[output_file_options] </span><span 
         class="output_file"        >{'output_file}'}</span></pre>
       
-      For example:
+      <!-- For example:
       <pre class="example-command">ffmpeg -i input_file.mp4 -b:v 64k -bufsize 64k output_file.mp4</pre>
       Your options:<br /><br />
       <div class="table-container">
@@ -165,7 +165,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
     </fieldset>
   </div>
 </Expandable>
