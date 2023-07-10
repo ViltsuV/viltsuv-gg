@@ -10,7 +10,7 @@
 
   $: if (typeof current_sseof_value === 'number' && current_sseof_value >= 0 && current_sseof_value <= duration_seconds ) {
 		command.update(($command) => {
-			$command.inputs[input_index].per_file_main_options.t = current_sseof_value
+			$command.inputs[input_index].per_file_main_options.sseof = current_sseof_value
 			return $command
 		})
 	} else {
