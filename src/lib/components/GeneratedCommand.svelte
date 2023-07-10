@@ -43,6 +43,11 @@
       >-sseof -{input.per_file_main_options.sseof.toFixed(2)} </span>{/if}
     {#if input.per_file_main_options.c.v.value}<span class="cmd_per_file_input_video_options">-c:v {input.per_file_main_options.c.v.value}</span>{/if}
     {#if input.per_file_main_options.t}<span class="cmd_per_file_input_video_options">-t {input.per_file_main_options.t.toFixed(2)} </span>{/if}
+    {#if input.per_file_main_options.to}<span 
+        class="cmd_per_file_input_video_options"
+        title={input.per_file_main_options.t > 0 ? '-t option will override -to if both are specified' : ''}
+        style={input.per_file_main_options.t > 0 ? 'color: gray;' : ''}
+      >-to {input.per_file_main_options.to.toFixed(2)} </span>{/if}
     <!-- TODO: the rest of the input options -->
   {/if}
   <!-- TODO: per-stream input options -->

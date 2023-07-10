@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Expandable from "$lib/components/Expandable.svelte"
 	import PerFileInputOptions_t from "$lib/components/PerFileInputOptions_t.svelte"
+	import PerFileInputOptions_to from "$lib/components/PerFileInputOptions_to.svelte"
 	import PerFileInputOptions_sseof from "$lib/components/PerFileInputOptions_sseof.svelte"
 	import PerFileInputOptions_ss from "$lib/components/PerFileInputOptions_ss.svelte"
   import { command } from "$lib/stores"
@@ -101,6 +102,7 @@
     <PerFileInputOptions_ss {input_index} {duration_seconds} />
     <PerFileInputOptions_sseof {input_index} {duration_seconds} />
     <PerFileInputOptions_t {input_index} {duration_seconds} />
+    <PerFileInputOptions_to {input_index} {duration_seconds} />
   </Expandable>
 </fieldset>
 
