@@ -29,6 +29,8 @@
   {#each global_options_array as global_option}
     <span class="cmd-global-options"> {global_option}</span>
   {/each}
+  <!-- 1 space after global options -->
+  <span class="cmd-global-options"> </span>
 {/if}
 
 {#each $command.inputs as input}
