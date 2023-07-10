@@ -109,7 +109,7 @@
         <div class="input-group-shim">fps</div>
       </div>
     </div>
-    <PerFileInputOptions_ss {input_index} {frames} {duration_seconds} {fps} {start_second} {start_frame} />
+    <PerFileInputOptions_ss {input_index} {duration_seconds} />
     <PerFileInputOptions_sseof {input_index} {frames} {duration_seconds} {fps} {start_second_eof} />
     <PerFileInputOptions_t {input_index} {frames} {duration_seconds} {fps} />
   </Expandable>
