@@ -5,7 +5,7 @@
   export let data: PageData
 </script>
 
-<div class="projects ">
+<div class="projects">
   {#each data.projects as project}
     <ProjectsListItem project={project} />
   {/each}
