@@ -26,7 +26,7 @@
     min={0}
     max={frames}
     step={1}
-    accent="accent-success-600 dark:accent-success-400"
+    accent="accent-tertiary-700 dark:accent-tertiary-500"
     title="send only the last {
       $command.inputs[input_index].per_file_main_options.sseof.toFixed(2)
       } seconds at the end of this input to be further processed"

@@ -42,18 +42,17 @@
     min={0}
     max={frames / fps}
     step={0.01}
-    accent="accent-success-600 dark:accent-success-400"
-    title="
-      limit the input duration to {
-      $command.inputs[input_index].per_file_main_options.t.toFixed(2)
-      } seconds
-    "
+    accent="accent-tertiary-700 dark:accent-tertiary-500"
+    title="limit the input duration to {current_t_value.toFixed(2)} seconds"
     disabled={duration_seconds === 0}
   >
     <div class="text-sm flex flex-row flex-wrap justify-between">
       <div class="mx-2">limit input duration (-t)</div>
       <div class="mx-2">{(current_t_value).toFixed(2)} / {duration_seconds} sec</div>
-      <div class="mx-2">{Math.floor(current_t_value / 60) + " min " + (current_t_value % 60).toFixed(2) + " sec"}</div>
+      <div class="mx-2">
+        {Math.floor(current_t_value / 60) + " min " + 
+        (current_t_value % 60).toFixed(2) + " sec"}
+      </div>
     </div>
   </RangeSlider>
   <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] max-w-[10rem] ml-2 my-2">
@@ -63,7 +62,8 @@
       max={duration_seconds}
       title={
         current_t_value.toFixed(2) + " sec\n" +
-        Math.floor(current_t_value / 60) + " min " + (current_t_value % 60).toFixed(2) + " sec"
+        Math.floor(current_t_value / 60) + " min " + 
+        (current_t_value % 60).toFixed(2) + " sec"
       }
       use:validate_t={current_t_value}
       bind:value={current_t_value}
