@@ -88,7 +88,7 @@
     </div>
 
     <!-- Framerate (within tool) -->
-    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
+    <!-- <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] my-2" 
       title={"Set input file frame rate within the tool. \nDoes not impact the command directly. \n"}
     >
       <div class="input-group-shim">Frame rate</div>
@@ -98,7 +98,7 @@
         >
         <div class="input-group-shim">fps</div>
       </div>
-    </div>
+    </div> -->
     <PerFileInputOptions_ss {input_index} {duration_seconds} />
     <PerFileInputOptions_sseof {input_index} {duration_seconds} />
     <PerFileInputOptions_t {input_index} {duration_seconds} />
