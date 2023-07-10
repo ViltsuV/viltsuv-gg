@@ -855,11 +855,15 @@ export type FFMPEG_Date = string | 'now'
 
 export type FFMPEG_Input = {
   ui: {
-    start_frame: number
-    start_frame_eof: number
     fps: number
     duration: {
+      /**
+       * @description minutes
+       */
       min: number
+      /**
+       * @description seconds
+       */
       sec: number
     }
   }

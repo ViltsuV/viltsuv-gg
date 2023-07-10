@@ -64,8 +64,6 @@ function generate_stream(type: StreamType, index: number): Stream {
 const generate_av_input = () => {
   let input: FFMPEG_Input = {
     ui: {
-      start_frame_eof: 0,
-      start_frame: 0,
       fps: 30,
       duration: {
         min: 0,
