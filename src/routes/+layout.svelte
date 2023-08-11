@@ -53,7 +53,7 @@
 					</svg>
 				</a>
 				<LightSwitch name="light-switch" size="sm" />
-				<button class="unselectable btn btn-sm variant-ringed-primary">Login</button>
+				<button class="unselectable btn btn-sm variant-ringed-tertiary">Login</button>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
