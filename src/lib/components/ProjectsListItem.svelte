@@ -6,11 +6,11 @@
 
 <div class="projects-list-item flex flex-row">
 
-  <img class="project-screenshot unselectable" src={project.screenshot_url} alt={project.screenshot_alt}>
+  <img class="project-screenshot unselectable" src={project.screenshot.href} alt={project.screenshot.alt}>
 
   <div class="project-info">
     <a href='projects/{project.slug}' class="project-name">
-      {project.name ? project.name : '[Project name]'}
+      {project.link.text || project.name ? project.link.text || project.name : '[project name]'}
     </a>
     <div class="project-description">{project.description ? project.description : '[project description]'}</div>
     <div class="activity">

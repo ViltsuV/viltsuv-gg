@@ -6,12 +6,16 @@
 	import '@skeletonlabs/skeleton/styles/all.css'
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss'
-	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton'
+	import { AppShell, AppBar, LightSwitch, Modal } from '@skeletonlabs/skeleton'
 </script>
+
+<Modal />
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar>
+		<AppBar
+			class={'bg-surface-200-700-token shadow-lg'}
+		>
 			<svelte:fragment slot="lead">
 				<a href="/">
 					<strong class="text-xl">ViltsuV.gg</strong>

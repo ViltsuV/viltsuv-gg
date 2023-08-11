@@ -11,11 +11,38 @@ export const load = (async () => {
 			description: 'description',
 			join_time: '',
 			owner: '',
-			screenshot_alt: 'screenshot alt',
-			screenshot_url: 'https://gravatar.com/avatar/38f2aba6683a7e54f4d81252718a17f7?s=200',
+			screenshot: {
+				href: 'https://gravatar.com/avatar/38f2aba6683a7e54f4d81252718a17f7?s=200',
+				alt: 'screenshot alt',
+			},
 			slug: 'ffmpeg-command-generator',
-			technologies: [{ name: '', type: 'frontend', url: '' }],
-			url: 'https://gravatar.com/avatar/38f2aba6683a7e54f4d81252718a17f7?s=200',
+			technologies: [],
+			tools: [],
+			link: {
+				href: '/',
+				text: 'FFMPEG Command Generator'
+			},
+			expanded: false,
+		},
+		{
+			name: 'Work History Timeline',
+			activity_periods: [{ start_time: '', end_time: '' }],
+			company_name: '',
+			description: 'description',
+			join_time: '',
+			owner: '',
+			screenshot: {
+				href: 'https://gravatar.com/avatar/38f2aba6683a7e54f4d81252718a17f7?s=200',
+				alt: 'screenshot alt',
+			},
+			slug: 'work-history-timeline',
+			technologies: [],
+			tools: [],
+			link: {
+				href: '/',
+				text: 'Work History Timeline'
+			},
+			expanded: false,
 		},
 	]
 	return {

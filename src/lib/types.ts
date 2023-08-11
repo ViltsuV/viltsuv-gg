@@ -4,9 +4,8 @@ export type Project = {
    * @description who is the project's owner?
    */
   owner: string
-  url: string
-  screenshot_url: string
-  screenshot_alt: string
+  link: Link
+  screenshot: Image
   /**
    * @description a description of 
    * - what the project is
@@ -24,10 +23,12 @@ export type Project = {
    */
   join_time: string
   technologies: Technology[]
+  tools: Tool[]
   /**
-   * @description if the project was made for a company, which company?
+   * @description if the project was made while working for a company, which company?
    */
-  company_name?: string | undefined
+  company_name: string
+  expanded: boolean
 }
 
 export type ActivityPeriod = {
@@ -40,19 +41,122 @@ export type ActivityPeriod = {
    * @description year-month-day
    * @example 2023-05-01
    */
-  end_time?: string | undefined
+  end_time: string
 }
 
+export type TechnologyType = 'frontend' | 'backend' | 'database' | 'api' | 'service'
+
 export type Technology = {
-  type: 'frontend' | 'backend' | 'db' | 'api' | 'service'
+  type: TechnologyType
   name: string
   /**
    * @description a link to the technology's home page
    */
-  url?: string
+  link: Link
 }
 
 export type Projects = Project[]
+
+export type WorkHistoryTimeline = {
+  employments: Employment[]
+}
+
+export type Employment = {
+  employer: Employer
+  role: Role
+  start_time: string
+  end_time: string
+  active: boolean
+  time_type: 'full-time' | 'part-time' | 'internship' | 'gig work'
+  work_location: 'on-premise' | 'remote' | 'hybrid'
+  projects: Project[]
+  tools: Tool[]
+  technologies: Technology[]
+  achievements: string[]
+  things_learned: string[]
+}
+
+export type Employer = {
+  name: string
+  link: Link
+  class_name: string
+  color: {
+    primary: string
+    primary_dark: string
+    secondary: string
+    secondary_dark: string
+  }
+  visible: boolean
+}
+
+export type EmployerEmployments = {
+  [employer_name: Employer['name']]: Employment[]
+}
+
+export type Role = {
+  /**
+   * @example software developer
+   */
+  title: string
+  /**
+   * @description The job description in a nutshell.
+   * Displayed as bullet points.
+   */
+  description: string[]
+  required_experience: 'entry-level' | 'mid-level' | 'senior'
+  responsibilities: string[]
+}
+
+export type Tool = {
+  name: string
+  /**
+   * @example 'software development' | 'AV-production' | 
+   * 'project management' | 'documentation'
+   */
+  purposes: string[]
+  link: Link
+}
+
+export type Link = {
+  href: string
+  text: string
+}
+
+export type Image = {
+  href: string,
+  alt: string
+}
+
+export type Interests = Interest[]
+
+export type Interest =  {
+  name: string
+  start_time: string
+  end_time: string
+}
+
+export type Certificates = Certificate[]
+
+export type Certificate = {
+  name: string
+  completion_date: string
+  link: Link
+}
+
+export type Hobbies = Hobby[]
+
+export type Hobby = {
+  name: string
+  start_time: string
+  /**
+   * @example 'beginner' | 'novice' | 'experienced' | 'pro'
+   */
+  proficiency_level: string
+  /**
+   * @example 'daily' | 'weekly' | 'monthly' | 'yearly' | '3 times / week'
+   */
+  activity_level: string
+}
 
 // FFMPEG-Command-Generator
 
