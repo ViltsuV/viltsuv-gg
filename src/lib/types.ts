@@ -53,6 +53,9 @@ export type Technology = {
    * @description a link to the technology's home page
    */
   link: Link
+  icon: {
+    src: string
+  }
 }
 
 export type Projects = Project[]

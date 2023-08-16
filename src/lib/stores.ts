@@ -282,8 +282,8 @@ function generate_tool(number: number): Tool {
 
 function generate_project(number: number): Project {
   return {
-    name: 'Employer project 1 name',
-    description: 'Project description',
+    name: `Project ${number} name`,
+    description: `project ${number} description`,
     company_name: `Employer ${number} name`,
     activity_periods: [
       {
@@ -299,11 +299,11 @@ function generate_project(number: number): Project {
     },
     slug: 'slug-to-employer-project-if-public-url-available',
     technologies: [
-      generate_technology('api name', 'api', 'https://api.technology.url', 'api.technology.url'),
-      generate_technology('frontend name', 'frontend', 'https://frontend.technology.url', 'frontend.technology.url'),
-      generate_technology('service name', 'service', 'https://service.technology.url', 'service.technology.url'),
-      generate_technology('backend name', 'backend', 'https://backend.technology.url', 'backend.technology.url'),
-      generate_technology('database name', 'database', 'https://database.technology.url', 'database.technology.url'),
+      generate_technology('api name', 'api', 'https://api.technology.url', 'api.technology.url', ''),
+      generate_technology('frontend name', 'frontend', 'https://frontend.technology.url', 'frontend.technology.url', ''),
+      generate_technology('service name', 'service', 'https://service.technology.url', 'service.technology.url', ''),
+      generate_technology('backend name', 'backend', 'https://backend.technology.url', 'backend.technology.url', ''),
+      generate_technology('database name', 'database', 'https://database.technology.url', 'database.technology.url', ''),
     ],
     tools: [
       generate_tool(1),
@@ -319,12 +319,16 @@ function generate_technology(
   name: string, 
   type: TechnologyType, 
   href: string,
-  link_text: string
+  link_text: string,
+  icon_src: string
 ): Technology {
   let technology: Technology = {
     name: name,
     type: type,
-    link: generate_link(href, link_text)
+    link: generate_link(href, link_text),
+    icon: {
+      src: icon_src
+    }
   }
   return technology
 }
@@ -388,11 +392,11 @@ function generate_employment(number: number, start_time: string, end_time: strin
       generate_tool(3),
     ],
     technologies: [
-      generate_technology('api name', 'api', 'https://api.technology.url', 'api.technology.url'),
-      generate_technology('frontend name', 'frontend', 'https://frontend.technology.url', 'frontend.technology.url'),
-      generate_technology('service name', 'service', 'https://service.technology.url', 'service.technology.url'),
-      generate_technology('backend name', 'backend', 'https://backend.technology.url', 'backend.technology.url'),
-      generate_technology('database name', 'database', 'https://database.technology.url', 'database.technology.url'),
+      generate_technology('api name', 'api', 'https://api.technology.url', 'api.technology.url', ''),
+      generate_technology('frontend name', 'frontend', 'https://frontend.technology.url', 'frontend.technology.url', ''),
+      generate_technology('service name', 'service', 'https://service.technology.url', 'service.technology.url', ''),
+      generate_technology('backend name', 'backend', 'https://backend.technology.url', 'backend.technology.url', ''),
+      generate_technology('database name', 'database', 'https://database.technology.url', 'database.technology.url', ''),
     ],
     work_location: 'on-premise',
     things_learned: ['learned thing 1', 'learned thing 2', 'learned thing 3']
