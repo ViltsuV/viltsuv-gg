@@ -18,7 +18,7 @@
 		>
 			<svelte:fragment slot="lead">
 				<a href="/">
-					<strong class="text-xl">ViltsuV.gg</strong>
+					<strong class="text-xl unselectable">ViltsuV.gg</strong>
 				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
@@ -63,8 +63,5 @@
 <style lang="postcss">
 	.svg-logo {
 		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5))
-	}
-	.unselectable {
-		user-select: none
 	}
 </style>

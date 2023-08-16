@@ -57,7 +57,4 @@
 </Expandable>
 
 <style lang="postcss">
-  .unselectable {
-		user-select: none
-	}
 </style>
