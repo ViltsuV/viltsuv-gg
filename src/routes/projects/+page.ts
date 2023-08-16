@@ -8,7 +8,7 @@ export const load = (async () => {
 			name: 'FFMPEG Command Generator',
 			activity_periods: [{ start_time: '', end_time: '' }],
 			company_name: '',
-			description: 'description',
+			description: 'A web interface for creating FFMPEG commands',
 			join_time: '',
 			owner: '',
 			screenshot: {
@@ -16,7 +16,19 @@ export const load = (async () => {
 				alt: 'screenshot alt',
 			},
 			slug: 'ffmpeg-command-generator',
-			technologies: [],
+			technologies: [
+				{
+					link: {
+						href: 'https://svelte.dev',
+						text: 'Svelte'
+					},
+					name: 'Svelte',
+					type: 'frontend',
+					icon: {
+						src: ''
+					}
+				}
+			],
 			tools: [],
 			link: {
 				href: '/',
