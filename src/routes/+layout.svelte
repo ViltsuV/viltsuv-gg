@@ -24,13 +24,6 @@
 			<svelte:fragment slot="trail">
 				<a
 					class="unselectable btn btn-sm variant-ghost-surface"
-					href="/projects"
-					target="_self"
-				>
-					Projects
-				</a>
-				<a
-					class="unselectable btn btn-sm variant-ghost-surface"
 					href="/work-history"
 					target="_self"
 				>

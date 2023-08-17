@@ -5,7 +5,7 @@
   export let project: Project
 </script>
 
-<a href='projects/{project.slug}'
+<a href='{project.slug}'
   class="projects-list-item
     flex
     flex-row
@@ -20,7 +20,7 @@
     max-w-2xl
     border-primary-900"
 >
-  <img class="project-screenshot unselectable" src={project.screenshot.href} alt={project.screenshot.alt}>
+  <img class="project-screenshot unselectable max-h-28 md:max-h-none" src={project.screenshot.href} alt={project.screenshot.alt}>
 
   <div class="project-info flex flex-col content-between justify-between pl-1">
     <header class="project-name
