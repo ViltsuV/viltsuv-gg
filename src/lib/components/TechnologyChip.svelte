@@ -5,14 +5,19 @@
 </script>
 
 <div class="technology technology-type-{technology.type} chip flex flex-row">
-  {#if technology.icon}
-    <img src="" alt="">
+  {#if technology.icon.src !== ''}
+    <img class="icon pl-1" src={technology.icon.src} alt={technology.name}>
   {/if}
-  <div>{technology.name} ({technology.type})</div>
-  <a class="pl-2" href={technology.link.href}>🔗</a>
+  <div>{technology.name}</div>
+  <div class="opacity-70">({technology.type})</div>
+  <a class="px-1" href={technology.link.href}>🔗</a>
 </div>
 
 <style lang="postcss">
+  .icon {
+    @apply 
+      max-h-5
+  }
   .technology {
     @apply 
       border
