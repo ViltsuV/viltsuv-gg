@@ -1,3 +1,10 @@
+/**
+ * @description utility type to view nested types
+ */
+export type ExpandType<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
 export type User = {
   email: string,
   username: string
