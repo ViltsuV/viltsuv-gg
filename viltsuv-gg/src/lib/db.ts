@@ -1,7 +1,7 @@
 import type { User } from "$lib/types";
 
 export default {
-  getUser: async (email: FormDataEntryValue): Promise<User> => {
+  getUser: async (email: string): Promise<User> => {
     let user = {
       email: '',
       username: '',

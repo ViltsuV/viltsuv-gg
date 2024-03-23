@@ -70,6 +70,10 @@ export type Technology = {
   }
 }
 
+export type IndustryKnowledge = {
+  name: string
+}
+
 export type Projects = Project[]
 
 export type WorkHistoryTimeline = {
