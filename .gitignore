@@ -1,0 +1,11 @@
+node_modules
+.env
+*.env
+.env.development
+.env.compose.development
+.env.production
+.env.compose.production
+*.tsbuildinfo
+dist
+secrets/*
+!secrets/example.secret

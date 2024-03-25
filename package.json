@@ -1,0 +1,79 @@
+{
+	"name": "pnpm-monorepo-practice",
+	"version": "1.0.0",
+	"private": true,
+	"description": "pnpm workspaces practice monorepo",
+	"homepage": "",
+	"author": "",
+	"keywords": [],
+	"license": "ISC",
+	"packageManager": "pnpm@8.15.4",
+	"engineStrict": true,
+	"engines": {
+		"node": ">16.0.0",
+		"pnpm": ">=8.15.4"
+	},
+	"type": "module",
+	"scripts": {
+		"setup": "pnpm run install-pkgs",
+		"preinstall": "npx only-allow pnpm",
+		"install-pkgs": "pnpm -r install",
+		"update-pkgs": "pnpm update -i -r --latest",
+		"prepare": "husky",
+		"p:b": "pnpm --filter @pnpm-monorepo-practice/backend",
+		"p:f": "pnpm --filter @pnpm-monorepo-practice/frontend",
+		"p:s": "pnpm --filter @pnpm-monorepo-practice/shared",
+		"p:t": "pnpm --filter @pnpm-monorepo-practice/types",
+		"dev": "pnpm run -r dev",
+		"format:check": "pnpm run -r format:check",
+		"format": "pnpm run -r format",
+		"lint": "pnpm run -r lint",
+		"lint:fix": "pnpm run -r lint:fix",
+		"build": "pnpm run -r build",
+		"clean": "pnpm run -r clean",
+		"test": "pnpm -r test"
+	},
+	"devDependencies": {
+		"eslint": "^8.57.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2",
+		"prettier": "3.2.5",
+		"rimraf": "5.0.5"
+	},
+	"lint-staged": {
+		"*.{ts,js,svelte,mjs,cjs}": "eslint --fix",
+		"*.{ts,js,svelte,mjs,cjs,css,md}": "prettier --write"
+	},
+	"eslintConfig": {
+		"extends": [
+			"eslint:recommended",
+			"plugin:import/recommended",
+			"prettier"
+		],
+		"parser": "@typescript-eslint/parser",
+		"parserOptions": {
+			"ecmaVersion": "latest",
+			"sourceType": "module"
+		},
+		"plugins": [
+			"@typescript-eslint",
+			"simple-import-sort",
+			"eslint-plugin-import"
+		],
+		"root": true,
+		"rules": {
+			"simple-import-sort/imports": "error",
+			"simple-import-sort/exports": "error",
+			"import/first": "error",
+			"import/named": "off",
+			"import/newline-after-import": "error",
+			"import/no-duplicates": "error"
+		},
+		"env": {
+			"browser": true,
+			"node": true,
+			"es6": true,
+			"shared-node-browser": true
+		}
+	}
+}
