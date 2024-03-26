@@ -1,0 +1,21 @@
+{
+	"name": "@pnpm-monorepo-practice/shared",
+	"version": "1.0.0",
+	"description": "monorepo shared code / configs",
+	"main": "index.ts",
+	"private": true,
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"scripts": {
+		"lint": "prettier --check . && eslint .",
+		"lint:fix": "prettier --check . && eslint --fix .",
+		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"@pnpm-monorepo-practice/types": "workspace:*"
+	},
+	"devDependencies": {
+		"prettier": "3.2.5"
+	}
+}

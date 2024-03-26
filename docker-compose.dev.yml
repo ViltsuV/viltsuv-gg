@@ -1,0 +1,35 @@
+services:
+  frontend:
+    container_name: dev-frontend-$COMPOSE_FRONTEND_NAME # from .env
+    build:
+      context: ./
+      dockerfile: dockerfile
+      target: dev-frontend
+    networks:
+      - default-network
+    ports:
+      - $COMPOSE_FRONTEND_PORT:$COMPOSE_FRONTEND_PORT # from .env
+    volumes:
+      - ./:/app
+    depends_on:
+      - backend
+
+  backend:
+    container_name: dev-backend-$COMPOSE_BACKEND_NAME # from .env
+    build:
+      context: ./
+      dockerfile: dockerfile
+      target: dev-backend
+      secrets:
+        - BUILD_SECRET # in dockerfile -> RUN --mount=type=secret,id=BUILD_SECRET BUILD_SECRET="$(cat /run/secrets/BUILD_SECRET)" \echo "BUILD_SECRET=$BUILD_SECRET"
+    networks:
+      - default-network
+    ports:
+      - $COMPOSE_BACKEND_PORT:$COMPOSE_BACKEND_PORT # from .env
+    volumes:
+      - ./:/app
+secrets:
+  BUILD_SECRET:
+    file: ./secrets/build-secret.secret
+networks:
+  default-network:

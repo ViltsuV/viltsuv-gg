@@ -1,0 +1,28 @@
+services:
+  frontend:
+    container_name: prod-frontend-$COMPOSE_FRONTEND_NAME # from .env
+    build:
+      context: ./
+      dockerfile: dockerfile
+      target: prod-frontend-sveltekit
+    networks:
+      - default-network
+    ports:
+      - $COMPOSE_FRONTEND_PORT:$COMPOSE_FRONTEND_PORT # from .env
+    depends_on:
+      - backend
+    env_file: .env.compose.production
+
+  backend:
+    container_name: prod-backend-$COMPOSE_BACKEND_NAME # from .env
+    build:
+      context: ./
+      dockerfile: dockerfile
+      target: prod-backend-fastify
+    networks:
+      - default-network
+    ports:
+      - $COMPOSE_BACKEND_PORT:$COMPOSE_BACKEND_PORT # from .env
+    env_file: .env.compose.production
+networks:
+  default-network:

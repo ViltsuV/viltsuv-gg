@@ -1,0 +1,65 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "dev docker compose up --build",
+			"type": "docker-compose",
+			"dockerCompose": {
+				"up": {
+					"detached": false,
+					"build": true
+				},
+				"files": ["${workspaceFolder}/docker-compose.dev.yml"],
+				"envFile": "./.env"
+			}
+		},
+		{
+			"label": "dev docker compose down",
+			"type": "docker-compose",
+			"dockerCompose": {
+				"down": {
+					// "removeImages": "all"
+				},
+				"files": ["${workspaceFolder}/docker-compose.dev.yml"]
+			}
+		}
+		// {
+		// 	// build and run dev compose environment
+		// 	"label": "bash dev docker compose up --build",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/dev-compose-build-and-run.sh"
+		// },
+		// {
+		// 	// run previously built dev compose environment
+		// 	"label": "bash dev docker compose up",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/dev-compose-up.sh"
+		// },
+		// {
+		// 	// shut down dev compose environment
+		// 	"label": "bash dev docker compose down",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/dev-compose-down.sh"
+		// },
+		// {
+		// 	// build and run prod compose environment
+		// 	"label": "bash prod docker compose up --build",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/prod-compose-build-and-run.sh"
+		// },
+		// {
+		// 	// run previously built prod compose environment
+		// 	"label": "bash prod docker compose up",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/prod-compose-up.sh"
+		// },
+		// {
+		// 	// shut down prod compose environment
+		// 	"label": "bash prod docker compose down",
+		// 	"type": "shell",
+		// 	"command": "bash ./scripts/prod-compose-down.sh"
+		// }
+	]
+}

@@ -1,0 +1,32 @@
+
+h1, 
+h1 ~ pre, 
+h1 ~ p,
+h1 ~ ul,
+h1 ~ ol {
+  color: rgb(255, 255, 255);
+}
+
+h2, 
+h2 ~ pre, 
+h2 ~ p,
+h2 ~ ul,
+h2 ~ ol {
+  color: rgb(113, 255, 108);
+}
+
+h3, 
+h3 ~ pre, 
+h3 ~ p,
+h3 ~ ul,
+h3 ~ ol {
+  color: rgba(186, 255, 196, 0.812);
+}
+
+h4, 
+h4 ~ pre, 
+h4 ~ p,
+h4 ~ ul,
+h4 ~ ol {
+  color: rgba(201, 201, 201, 0.867);
+}

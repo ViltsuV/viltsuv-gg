@@ -1,3 +1,15 @@
+/**
+ * @description utility type to view nested types
+ */
+export type ExpandType<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+export type User = {
+  email: string,
+  username: string
+}
+
 export type Project = {
   name: string
   /**
@@ -56,6 +68,10 @@ export type Technology = {
   icon: {
     src: string
   }
+}
+
+export type IndustryKnowledge = {
+  name: string
 }
 
 export type Projects = Project[]

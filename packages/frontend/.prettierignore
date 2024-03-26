@@ -7,10 +7,6 @@ node_modules
 .env.*
 !.env.example
 
-# docker is specific about single vs. double quotes, 
-# sometimes it may become a problem
-docker-compose.*.yml
-
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
 pnpm-workspace.yaml
